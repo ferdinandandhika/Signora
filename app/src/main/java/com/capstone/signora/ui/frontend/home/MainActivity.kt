@@ -10,4 +10,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 }
-// coba ganti nama
+
+// check again for change name with email
