@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "100849197659",
+    "project_id": "signora-e8d6b",
+    "storage_bucket": "signora-e8d6b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100849197659:android:7834953bdefc51736dd57e",
+        "android_client_info": {
+          "package_name": "com.capstone.signora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZNc2tloB-UlZz4W66CE2fKJVJeNOFh_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
