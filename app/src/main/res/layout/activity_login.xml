@@ -6,7 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E7F4FE"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.frontend.auth.LoginActivity">
+
+    <!--
+
+    NOTEEEEE : FER BENERIN CONSTRAINT BUAT MASUK INSTANT MAKE GOOGLE
+    TAMPILANNYA BELUM FULL MUNCUL, SARAN PAKE NESTEDSCROLLVIEW ATAU LAINNYA
+    BENERIN BUAT DI LAYOUT LOGIN SAMA DAFTAR SAMA TAMBAHIN DI DAFTAR KALAU
+    UDAH BUAT AKUN BUTTON BUAT MASUK ATAU BUTTON BACK KE HALAMAN LOGIN
+
+    -->
 
     <ImageView
         android:id="@+id/bola"
@@ -24,7 +33,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="390dp"
@@ -34,7 +42,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/textView1"
@@ -53,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/username_or_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -61,7 +68,7 @@
         android:layout_marginEnd="32dp"
         android:background="@drawable/edittext_background"
         android:fontFamily="@font/poppins_semibold"
-        android:hint="Username"
+        android:hint="Username or Email"
         android:padding="16dp"
         android:textColorHint="#8A8A8A"
         android:textSize="16sp"
@@ -69,7 +76,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
-    <!-- Tambahkan EditText untuk Password -->
     <EditText
         android:id="@+id/password"
         android:layout_width="0dp"
@@ -86,9 +92,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    <!-- Tambahkan TextView untuk "Lupa password? Tekan Ini" -->
+        app:layout_constraintTop_toBottomOf="@+id/username_or_email" />
 
     <TextView
         android:id="@+id/forgot_password"
@@ -125,7 +129,7 @@
         android:layout_height="65dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/masukbiru"
-        android:contentDescription="@string/login_buttonc"
+        android:contentDescription="Untuk login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgot_password_link" />
@@ -141,7 +145,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
-
 
     <TextView
         android:id="@+id/or_login_with"

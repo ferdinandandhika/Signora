@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E7F4FE"
-    tools:context=".ui.welcome.WelcomeActivity">
+    tools:context=".ui.frontend.home.WelcomeActivity">
 
     <ImageView
         android:id="@+id/bola"
@@ -94,7 +94,7 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/button_daftar"
         android:layout_width="145dp"
         android:layout_height="56dp"
         android:layout_marginTop="30dp"
@@ -104,10 +104,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4"></ImageButton>
 
     <ImageButton
+        android:id="@+id/button_masuk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/kotling"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/button_daftar"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"></ImageButton>
