@@ -24,12 +24,12 @@ class LoginActivity : AppCompatActivity() {
 
         testFirestoreQuery()
 
-        val usernameOrEmailEditText: EditText = findViewById(R.id.username_or_email)
+        val emailEditText: EditText = findViewById(R.id.email)
         val passwordEditText: EditText = findViewById(R.id.password)
         val loginButton: ImageButton = findViewById(R.id.login_button)
 
         loginButton.setOnClickListener {
-            val usernameOrEmail = usernameOrEmailEditText.text.toString().trim()
+            val usernameOrEmail = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (usernameOrEmail.isEmpty() || password.isEmpty()) {

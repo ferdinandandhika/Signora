@@ -3,4 +3,10 @@
     <string name="login_buttonc">login button</string>
     <string name="gmail_button">gmail button</string>
     <string name="register_button">register button</string>
+    <string name="camera">camera</string>
+    <string name="back_button">back</string>
+    <string name="enter_description">Description</string>
+    <string name="gallery">Gallery</string>
+    <string name="upload">Upload</string>
+    <string name="namaanda">nama anda\n</string>
 </resources>

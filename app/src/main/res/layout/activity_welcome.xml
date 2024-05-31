@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E7F4FE"
+    android:background="@color/background"
     tools:context=".ui.frontend.home.WelcomeActivity">
 
     <ImageView
@@ -23,15 +23,15 @@
         android:src="@drawable/ombak"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.905"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.998" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="356dp"
-        android:layout_height="350dp"
+        android:layout_width="340dp"
+        android:layout_height="335dp"
         android:layout_marginTop="100dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +46,7 @@
         android:fontFamily="@font/poppins_medium_italic"
         android:text="Ayo bergabung dengan"
         android:textColor="@color/primary"
+
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,9 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold_italic"
-        android:shadowColor="#296E9F"
-        android:shadowDx="0"
-        android:shadowRadius="2"
+        android:shadowColor="@color/primary"
+        android:shadowDx="2"
+        android:shadowDy="3"
+        android:shadowRadius="3"
         android:text="Signora"
         android:textColor="#3BABFD"
         android:textSize="20sp"
@@ -84,7 +86,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_bold_italic"
         android:shadowColor="@color/primary"
-        android:shadowRadius="2"
+        android:shadowDx="2"
+        android:shadowDy="3"
+        android:shadowRadius="3"
         android:text="bahasa isyarat bersama-sama!"
         android:textColor="#3BABFD"
         android:textSize="20sp"
