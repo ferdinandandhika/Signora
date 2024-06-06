@@ -1,5 +1,6 @@
 package com.capstone.signora.ui.frontend.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
@@ -7,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.signora.R
+import com.capstone.signora.ui.frontend.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -27,7 +29,6 @@ class RegisterActivity : AppCompatActivity() {
         val passwordEditText: EditText = findViewById(R.id.password)
         val registerButton: ImageButton = findViewById(R.id.register_button)
 
-
         registerButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
@@ -43,24 +44,45 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser(name: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val user = hashMapOf(
-                        "name" to name,
-                        "email" to email
-                    )
-                    db.collection("users").document(auth.currentUser!!.uid)
-                        .set(user)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(this, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
+        // Check if the username already exists by Muhammad Adi Kurnianto
+        db.collection("users").whereEqualTo("name", name).get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    // Proceed with registration if username is not taken by Muhammad Adi Kurnianto
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                val user = hashMapOf(
+                                    "name" to name,
+                                    "email" to email
+                                )
+                                db.collection("users").document(auth.currentUser!!.uid)
+                                    .set(user)
+                                    .addOnSuccessListener {
+                                        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+                                        val editor = sharedPreferences.edit()
+                                        editor.putString("userName", name)
+                                        editor.putString("userEmail", email)
+                                        editor.apply()
+
+                                        Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(this, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                 }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Failed to check username: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

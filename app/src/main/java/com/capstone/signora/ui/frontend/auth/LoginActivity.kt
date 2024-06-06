@@ -39,6 +39,15 @@ class LoginActivity : AppCompatActivity() {
 
             loginUser(usernameOrEmail, password)
         }
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            // User is signed in by Muhammad Adi Kurnianto
+            Log.d("LoginActivity", "User is signed in: ${user.uid}")
+        } else {
+            // No user is signed in by Muhammad Adi Kurnianto
+            Log.d("LoginActivity", "No user is signed in")
+        }
     }
 
     private fun loginUser(usernameOrEmail: String, password: String) {
@@ -77,9 +86,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getEmailFromUsername(username: String, callback: (String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
-        db.collection("users")
-            .whereEqualTo("username", username)
-            .get()
+        Log.d("LoginActivity", "Searching for username: $username")
+        val query = db.collection("users").whereEqualTo("name", username).limit(1)
+        query.get()
             .addOnSuccessListener { documents ->
                 if (documents != null && !documents.isEmpty) {
                     val email = documents.documents[0].getString("email")
