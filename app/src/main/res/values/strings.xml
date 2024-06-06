@@ -9,4 +9,6 @@
     <string name="gallery">Gallery</string>
     <string name="upload">Upload</string>
     <string name="namaanda">nama anda\n</string>
+
+    <string name="profile_image_description">profile</string>
 </resources>
