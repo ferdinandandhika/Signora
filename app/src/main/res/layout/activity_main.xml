@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".ui.frontend.home.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -22,7 +23,7 @@
             android:minHeight="?attr/actionBarSize">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/logoutButton"
+                android:id="@+id/ProfileButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="end"
@@ -61,6 +62,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"
             android:src="@drawable/avatar"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,7 +74,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/poppins_bold_italic"
-            android:text="Selamat Datang"
+            android:text="InI contoh welcome"
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintStart_toEndOf="@+id/profileImage"
@@ -84,9 +87,9 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_bold_italic"
-            android:text="@string/namaanda"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:text="ini contoh nama"
             app:layout_constraintStart_toEndOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -248,11 +251,12 @@
         android:contentDescription="@string/camera"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/bottombar_air"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="fitXY"
+        android:background="@android:color/transparent"
         android:src="@drawable/bottombar_air"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
