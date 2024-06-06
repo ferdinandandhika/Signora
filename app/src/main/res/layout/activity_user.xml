@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".UserActivity">
+    tools:context=".ui.frontend.home.UserActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/atas_main"
@@ -36,11 +36,14 @@
             android:layout_width="159dp"
             android:layout_height="130dp"
             android:layout_marginTop="60dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/avatar"
+            android:contentDescription="@string/profile_image_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/avatar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/userName"
@@ -131,10 +134,11 @@
 
                 <ImageView
                     android:layout_width="111dp"
-                    android:layout_height="60dp"
+                    android:layout_height="59dp"
                     android:src="@drawable/baseline_person_24" />
 
                 <TextView
+                    android:id="@+id/change_username_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ubah Username"
@@ -169,6 +173,7 @@
                     android:src="@drawable/baseline_lock_person_24" />
 
                 <TextView
+                    android:id="@+id/change_password_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ubah Password"
