@@ -9,6 +9,7 @@ firebaseAuthVersion = "21.0.1"
 firebaseCore = "21.1.1"
 firebaseFirestore = "25.0.0"
 firebaseStorage = "21.0.0"
+fragmentKtx = "1.7.1"
 glide = "4.16.0"
 imagepicker = "2.1"
 kotlin = "1.9.0"
@@ -25,13 +26,19 @@ firebaseAuth = "23.0.0"
 firebaseAuthKtx = "23.0.0"
 firebaseDatabase = "21.0.0"
 playServicesCastFramework = "21.5.0"
+retrofit = "2.9.0"
+lifecycleRuntimeKtx = "2.6.1"
+activityCompose = "1.9.0"
+composeBom = "2023.08.00"
 
 [libraries]
 
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 circle-image-view = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleImageViewVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 compiler-v4120 = { module = "com.github.bumptech.glide:compiler", version.ref = "compilerVersion" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-appcheck = { module = "com.google.firebase:firebase-appcheck", version.ref = "firebaseAppcheck" }
 firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity", version.ref = "firebaseAppcheck" }
 firebase-appcheck-safetynet = { module = "com.google.firebase:firebase-appcheck-safetynet", version.ref = "firebaseAppcheckSafetynet" }
@@ -52,6 +59,17 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 play-services-cast-framework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playServicesCastFramework" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

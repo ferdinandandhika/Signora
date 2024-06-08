@@ -17,10 +17,10 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.capstone.signora.DaftarIstilahActivity
-import com.capstone.signora.ForumActivity
 import com.capstone.signora.FullScreenImageDialogFragment
 import com.capstone.signora.LatihanActivity
 import com.capstone.signora.TutorialActivity
+import com.capstone.signora.ui.activity.ForumActivity
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
