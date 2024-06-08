@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="30dp"
+    android:gravity="center"
+    tools:context=".ui.frontend.pager.PagerActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/image_onboarding"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/pager2" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_onboarding_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_onboarding"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_bold_italic"
+        android:text="@string/title_onboarding_1"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_onboarding_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_onboarding_title"
+            android:text="@string/description_onboarding_1"
+            android:textSize="17sp"
+            android:fontFamily="@font/poppins_medium_italic"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"/>
+
+    </RelativeLayout>

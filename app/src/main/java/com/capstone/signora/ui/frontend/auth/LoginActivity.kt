@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.EditText
-import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.capstone.signora.R
 import com.capstone.signora.ui.frontend.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +27,13 @@ class LoginActivity : AppCompatActivity() {
 
         val emailEditText: EditText = findViewById(R.id.email)
         val passwordEditText: EditText = findViewById(R.id.password)
-        val loginButton: ImageButton = findViewById(R.id.login_button)
+        val loginButton: AppCompatButton = findViewById(R.id.login_button)
+        val daftarButton: TextView = findViewById(R.id.button_register)
+
+        daftarButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
         loginButton.setOnClickListener {
             val usernameOrEmail = emailEditText.text.toString().trim()

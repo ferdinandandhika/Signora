@@ -17,16 +17,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/ombak"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ombak"
+        android:id="@+id/bottombar_air"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottombar_air"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.905"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.998" />
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/logo"
@@ -97,25 +97,35 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_daftar"
         android:layout_width="145dp"
         android:layout_height="56dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/daftar"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="40dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"></ImageButton>
+        android:background="@drawable/btn_blue_selector"
+        android:fontFamily="@font/poppins_extrabold"
+        android:text="@string/Daftar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_masuk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/kotling"
+        android:layout_width="145dp"
+        android:layout_height="56dp"
+        android:background="@drawable/btn_white_selector"
+        android:fontFamily="@font/poppins_extrabold"
+        android:text="@string/masuk"
+        android:textAllCaps="false"
+        android:textColor="@color/secondary"
+        android:textSize="25dp"
         app:layout_constraintEnd_toStartOf="@+id/button_daftar"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"></ImageButton>
+        app:layout_constraintTop_toBottomOf="@+id/textView4"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

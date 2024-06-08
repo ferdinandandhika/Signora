@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import com.capstone.signora.R
 import com.capstone.signora.ui.frontend.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +29,13 @@ class RegisterActivity : AppCompatActivity() {
         val nameEditText: EditText = findViewById(R.id.nama)
         val emailEditText: EditText = findViewById(R.id.email)
         val passwordEditText: EditText = findViewById(R.id.password)
-        val registerButton: ImageButton = findViewById(R.id.register_button)
+        val registerButton: AppCompatButton = findViewById(R.id.register_button)
+        val masukButton: TextView = findViewById((R.id.button_daftar))
+
+        masukButton.setOnClickListener {
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         registerButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()

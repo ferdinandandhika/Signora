@@ -11,4 +11,27 @@
     <string name="namaanda">nama anda\n</string>
 
     <string name="profile_image_description">profile</string>
+    <string name="start">daftar</string>
+    <string name="daftarIsi">Mulailah petualangan Anda dalam memahami bahasa isyarat dengan mudah dan interaktif.</string>
+
+
+    //Onboarding
+    <string name="title_onboarding_1">Selamat datang di Signora</string>
+    <string name="description_onboarding_1">Menghubungkan Dunia dengan Bahasa Isyarat. Jembatan komunikasi melalui bahasa isyarat</string>
+
+        <string name="title_onboarding_2">Scan mudah di Signora</string>
+    <string name="description_onboarding_2">Teknologi canggih untuk terjemahan cepat yang memahami gerakan bahasa isyarat dengan mudah dan mengubahnya menjadi teks dalam hitungan detik</string>
+
+    <string name="title_onboarding_3">Kuis Menarik</string>
+    <string name="description_onboarding_3">Uji pengetahuan Anda dengan kuis yang menantang dan edukatif.</string>
+
+    <string name="title_onboarding_4">Pembelajaran Isyarat</string>
+    <string name="description_onboarding_4">Pelajari isyarat baru setiap hari dan perluas kemampuan komunikasi Anda.</string>
+
+    <string name="title_onboarding_5">Komunitas Inklusif</string>
+    <string name="description_onboarding_5">Bergabunglah dengan komunitas yang mendukung dan berbagi pengetahuan tentang bahasa isyarat.</string>
+    <string name="Daftar">Daftar</string>
+    <string name="masuk">Login</string>
+
+
 </resources>

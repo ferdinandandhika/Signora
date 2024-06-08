@@ -4,8 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#296EA0</color>
     <color name="secondary">#3BABFD</color>
+    <color name="grey">#7E8387</color>
     <color name="background">#E7F4FE</color>
-    <color name="ic_launcher_background"></color>
 
     <!-- Profile Image -->
     <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">
