@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UsernameActivity">
+    tools:context=".UsernameActivity"
+    android:background="@color/background">
 
     <ImageView
         android:id="@+id/bola"
@@ -54,7 +55,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
-    <EditText
+    <com.capstone.signora.ui.frontend.auth.customview.UsenameEditText
         android:id="@+id/username_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -72,13 +73,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
 
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/change_button"
         android:layout_width="141dp"
         android:layout_height="55dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ganti_button"
-        android:contentDescription="Untuk login"
+        android:layout_marginTop="40dp"
+        android:textSize="25dp"
+        android:textAllCaps="false"
+        android:background="@drawable/btn_blue_selector"
+        android:text="@string/ganti"
+        android:fontFamily="@font/poppins_extrabold"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username_text" />

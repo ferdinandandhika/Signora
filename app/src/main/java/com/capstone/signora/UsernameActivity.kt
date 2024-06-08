@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import android.widget.ImageButton
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -36,7 +37,7 @@ class UsernameActivity : AppCompatActivity() {
         }
 
         val usernameEditText: EditText = findViewById(R.id.username_text)
-        val changeButton: ImageButton = findViewById(R.id.change_button)
+        val changeButton: AppCompatButton = findViewById(R.id.change_button)
 
         changeButton.setOnClickListener {
             val newUsername = usernameEditText.text.toString().trim()

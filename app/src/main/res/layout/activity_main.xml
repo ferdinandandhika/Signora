@@ -63,6 +63,7 @@
             android:layout_marginTop="16dp"
             android:src="@drawable/avatar"
             android:clickable="true"
+            android:contentDescription="@string/profile_image_description"
             android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -258,6 +259,7 @@
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
         android:src="@drawable/bottombar_air"
+        android:contentDescription="@string/profile_image_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.3"

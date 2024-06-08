@@ -1,9 +1,12 @@
 package com.capstone.signora.ui.frontend.auth
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         val passwordEditText: EditText = findViewById(R.id.password)
         val loginButton: AppCompatButton = findViewById(R.id.login_button)
         val daftarButton: TextView = findViewById(R.id.button_register)
+        val showPasswordButton: ImageButton = findViewById(R.id.show_password_button)
 
         daftarButton.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -55,6 +60,18 @@ class LoginActivity : AppCompatActivity() {
             // No user is signed in by Muhammad Adi Kurnianto
             Log.d("LoginActivity", "No user is signed in")
         }
+
+        showPasswordButton.setOnClickListener {
+            if (isPasswordVisible) {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                showPasswordButton.setImageResource(R.drawable.baseline_remove_red_eye_24) // Replace with your icon
+            } else {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                showPasswordButton.setImageResource(R.drawable.eyesblue) // Replace with your icon
+            }
+            passwordEditText.setSelection(passwordEditText.length())
+            isPasswordVisible = !isPasswordVisible
+        }
     }
 
     private fun loginUser(usernameOrEmail: String, password: String) {
@@ -62,6 +79,10 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(usernameOrEmail, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        // Save login status in SharedPreferences
+                        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
                         Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -76,6 +97,10 @@ class LoginActivity : AppCompatActivity() {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
+                                // Save login status in SharedPreferences
+                                val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+                                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
+
                                 Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                                 startActivity(intent)
@@ -125,4 +150,6 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("LoginActivity", "Error getting documents: ", exception)
             }
     }
+
+
 }

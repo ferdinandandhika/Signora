@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -49,6 +48,8 @@ class UserActivity : AppCompatActivity() {
         userNameTextView.text = userName
         userEmailTextView.text = userEmail
 
+
+
         // Load profile image from Firebase by Muhammad Adi Kurnianto
         loadProfileImage()
 
@@ -63,6 +64,11 @@ class UserActivity : AppCompatActivity() {
         fotoProfilCard.setOnClickListener {
             val intent = Intent(this, FotoProfilActivity::class.java)
             startActivity(intent)
+        }
+
+        val logoutCard = findViewById<CardView>(R.id.logout)
+        logoutCard.setOnClickListener {
+            showLogoutDialog()
         }
 
         // Add this block to handle profile image click by Muhammad Adi Kurnianto
@@ -161,5 +167,24 @@ class UserActivity : AppCompatActivity() {
         super.onDestroy()
         unregisterReceiver(profileImageReceiver)
         unregisterReceiver(usernameReceiver)
+    }
+
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Logout")
+            .setMessage("Are you sure you want to logout?")
+            .setPositiveButton("Yes") { _, _ -> logout() }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    private fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+        startActivity(Intent(this, WelcomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        })
+        finish()
     }
 }

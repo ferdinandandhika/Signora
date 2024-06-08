@@ -32,6 +32,11 @@
     <string name="description_onboarding_5">Bergabunglah dengan komunitas yang mendukung dan berbagi pengetahuan tentang bahasa isyarat.</string>
     <string name="Daftar">Daftar</string>
     <string name="masuk">Login</string>
+    <string name="show_password">show password</string>
+    <string name="errorEmail">Harap memasukan email dengan benar</string>
+    <string name="errorPass">Password minimal 8 karakter</string>
+    <string name="minimum">Nama minimal 3 karakter</string>
+    <string name="ganti">Ganti</string>
 
 
 </resources>
