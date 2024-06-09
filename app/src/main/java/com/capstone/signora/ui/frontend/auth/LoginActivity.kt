@@ -79,14 +79,15 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(usernameOrEmail, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Save login status in SharedPreferences
-                        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-                        sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-
-                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        val user = auth.currentUser
+                        if (user != null) {
+                            val email = user.email
+                            fetchUserNameAndSave(user.uid, email) {
+                                startMainActivity()
+                            }
+                        } else {
+                            startMainActivity()
+                        }
                     } else {
                         Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
@@ -97,14 +98,14 @@ class LoginActivity : AppCompatActivity() {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                // Save login status in SharedPreferences
-                                val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-                                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
-
-                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
+                                val user = auth.currentUser
+                                if (user != null) {
+                                    fetchUserNameAndSave(user.uid, email) {
+                                        startMainActivity()
+                                    }
+                                } else {
+                                    startMainActivity()
+                                }
                             } else {
                                 Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
@@ -114,6 +115,35 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun fetchUserNameAndSave(uid: String, email: String?, callback: () -> Unit) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val name = document.getString("name")
+                    updateSharedPreferences(name, email)
+                    callback()
+                } else {
+                    Log.d("LoginActivity", "No such document")
+                    callback()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("LoginActivity", "get failed with ", exception)
+                callback()
+            }
+    }
+
+    private fun updateSharedPreferences(name: String?, email: String?) {
+        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putString("name", name)
+            putString("userEmail", email)
+            apply()
+        }
+        Log.d("LoginActivity", "Updated SharedPreferences with name: $name, email: $email")
     }
 
     private fun getEmailFromUsername(username: String, callback: (String?) -> Unit) {
@@ -151,5 +181,9 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-
+    private fun startMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
 }

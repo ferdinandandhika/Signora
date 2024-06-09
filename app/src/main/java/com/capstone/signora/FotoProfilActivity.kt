@@ -44,6 +44,8 @@ class FotoProfilActivity : AppCompatActivity() {
             val file = File(currentPhotoPath)
             val uri = FileProvider.getUriForFile(this, "com.capstone.signora.fileprovider", file)
             previewImageView.setImageURI(uri)
+            previewImageView.visibility = View.VISIBLE // Ensure visibility
+            previewImageView.setBackgroundResource(0) // Remove placeholder background
             currentPhotoPath = uri.toString() // Update currentPhotoPath to URI string by Muhammad Adi Kurnianto
         }
     }
@@ -53,6 +55,8 @@ class FotoProfilActivity : AppCompatActivity() {
             val uri: Uri? = result.data?.data
             if (uri != null) {
                 previewImageView.setImageURI(uri)
+                previewImageView.visibility = View.VISIBLE // Ensure visibility
+                previewImageView.setBackgroundResource(0) // Remove placeholder background
                 currentPhotoPath = uri.toString()
             }
         }

@@ -41,6 +41,8 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+        dataBinding = true
+        mlModelBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -80,6 +82,18 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation (libs.androidx.camera.core)
+    implementation (libs.androidx.camera.camera2)
+    implementation (libs.androidx.camera.lifecycle)
+    implementation (libs.androidx.camera.view)
+    implementation (libs.androidx.camera.extensions)
+    implementation (libs.androidx.concurrent.futures)
+    implementation (libs.guava)
+    implementation (libs.okhttp)
+    implementation (libs.tensorflow.lite)
+    implementation (libs.tensorflow.lite.gpu)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
     testImplementation(libs.junit)
     implementation (libs.glide)
     androidTestImplementation(libs.androidx.junit)

@@ -3,7 +3,7 @@
     <style name="Base.Theme.Signora" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/secondary</item>
         <item name="colorPrimaryDark">@color/primary</item>
-        </style>
+    </style>
 
     <style name="Theme.Signora" parent="Base.Theme.Signora" />
 </resources>

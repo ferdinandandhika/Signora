@@ -14,6 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.capstone.signora.DaftarIstilahActivity
@@ -21,6 +22,7 @@ import com.capstone.signora.FullScreenImageDialogFragment
 import com.capstone.signora.LatihanActivity
 import com.capstone.signora.TutorialActivity
 import com.capstone.signora.ui.activity.ForumActivity
+import com.capstone.signora.CameraX
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -54,14 +56,15 @@ class MainActivity : AppCompatActivity() {
         
         animateText(welcomeMessage)
         
+        // Load user data from SharedPreferences
         val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val userName = sharedPreferences.getString("userName", "Nama Pengguna")
+        val name = sharedPreferences.getString("name", "Nama Pengguna")
         val userEmail = sharedPreferences.getString("userEmail", "email")
 
-        Log.d("MainActivity", "userName: $userName, userEmail: $userEmail")
-
         val userNameTextView = findViewById<TextView>(R.id.userName)
-        userNameTextView.text = userName
+        userNameTextView.text = name
+
+        Log.d("MainActivity", "name: $name, userEmail: $userEmail")
 
         // Load profile image from Firebase by Muhammad Adi Kurnianto
         loadProfileImage()
@@ -121,6 +124,13 @@ class MainActivity : AppCompatActivity() {
         val forumCardView = findViewById<CardView>(R.id.forum)
         forumCardView.setOnClickListener {
             val intent = Intent(this, ForumActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Add this block to handle bottombar_air button click
+        val cameraButton = findViewById<ImageButton>(R.id.bottombar_air)
+        cameraButton.setOnClickListener {
+            val intent = Intent(this, CameraX::class.java)
             startActivity(intent)
         }
 
@@ -198,6 +208,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(profileImageReceiver)
+        unregisterReceiver(usernameReceiver)
         handler.removeCallbacksAndMessages(null)
     }
 }

@@ -39,13 +39,14 @@ class UserActivity : AppCompatActivity() {
         userEmailTextView = findViewById(R.id.email)
         profileImageView = findViewById(R.id.profileImage)
 
+        // Load user data from SharedPreferences
         val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val userName = sharedPreferences.getString("userName", "Nama Pengguna")
+        val name = sharedPreferences.getString("name", "Nama Pengguna")
         val userEmail = sharedPreferences.getString("userEmail", "email")
 
-        Log.d("UserActivity", "userName: $userName, userEmail: $userEmail")
+        Log.d("UserActivity", "name: $name, userEmail: $userEmail")
 
-        userNameTextView.text = userName
+        userNameTextView.text = name
         userEmailTextView.text = userEmail
 
 

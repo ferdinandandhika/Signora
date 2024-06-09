@@ -19,7 +19,7 @@
     <string name="title_onboarding_1">Selamat datang di Signora</string>
     <string name="description_onboarding_1">Menghubungkan Dunia dengan Bahasa Isyarat. Jembatan komunikasi melalui bahasa isyarat</string>
 
-        <string name="title_onboarding_2">Scan mudah di Signora</string>
+    <string name="title_onboarding_2">Scan mudah di Signora</string>
     <string name="description_onboarding_2">Teknologi canggih untuk terjemahan cepat yang memahami gerakan bahasa isyarat dengan mudah dan mengubahnya menjadi teks dalam hitungan detik</string>
 
     <string name="title_onboarding_3">Kuis Menarik</string>
@@ -38,6 +38,9 @@
     <string name="minimum">Nama minimal 3 karakter</string>
     <string name="ganti">Ganti</string>
     <string name="title_activity_add_discussion">AddDiscussion</string>
+    <string name="title_activity_camera_x">CameraX</string>
+    
+    <string name="instruction">Arahkan kamera untuk memulai terjemahkan</string>
 
 
 </resources>

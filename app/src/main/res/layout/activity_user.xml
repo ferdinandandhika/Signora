@@ -38,7 +38,7 @@
             android:layout_marginTop="60dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/avatar"
+            android:src="@drawable/ic_profile_placeholder"
             android:contentDescription="@string/profile_image_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
