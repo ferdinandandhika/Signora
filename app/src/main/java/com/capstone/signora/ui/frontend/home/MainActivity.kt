@@ -16,11 +16,11 @@ import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.capstone.signora.FullScreenImageDialogFragment
-import com.capstone.signora.LatihanActivity
 import com.capstone.signora.TutorialActivity
 import com.capstone.signora.ui.activity.ForumActivity
 import com.capstone.signora.CameraX
 import com.capstone.signora.ui.frontend.istilah.IstilahActivity
+import com.capstone.signora.ui.frontend.latihan.LatihanActivity
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory

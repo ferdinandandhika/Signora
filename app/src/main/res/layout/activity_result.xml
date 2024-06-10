@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.frontend.latihan.ResultActivity"
+    android:background="@color/secondary"
+    android:gravity="center"
+    android:paddingHorizontal="30dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:text="YEAYYYYY"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trophy"
+        />
+
+    <TextView
+        android:id="@+id/congratulationsTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold_italic"
+        tools:text="Selamat Ferdi!"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/scoreTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Score kamu 7 dari 10"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_extrabold"
+        android:textSize="20sp"
+        android:paddingVertical="16dp"
+        />
+
+    <Button
+        android:id="@+id/btnRestart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="selesai"
+        android:fontFamily="@font/poppins_extrabold"
+        android:textAllCaps="true"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/primary"
+        android:textSize="25sp"
+        />
+
+</LinearLayout>

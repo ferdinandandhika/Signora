@@ -59,12 +59,14 @@
             android:name=".ui.activity.ForumActivity"
             android:exported="false" />
         <activity
-            android:name=".LatihanActivity"
+            android:name=".ui.frontend.latihan.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.frontend.latihan.LatihanActivity"
             android:exported="false" />
         <activity
             android:name=".TutorialActivity"
             android:exported="false" />
-
         <activity
             android:name=".PasswordActivity"
             android:exported="false" />
