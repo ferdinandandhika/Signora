@@ -1,9 +1,9 @@
 package com.capstone.signora.ui.frontend.latihan
 
-
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -12,16 +12,18 @@ import com.capstone.signora.R
 
 class LatihanActivity : AppCompatActivity() {
     private var userName: String? = null
+    private var questionType: String? = null
 
-    private val questionsList: ArrayList<Question> = Constants.getQuestions()
-    private var currentQuestionIndex = 0;
-    private var selectedAlternativeIndex = -1;
-    private var isAnswerChecked = false;
-    private var totalScore = 0;
+    private lateinit var questionsList: ArrayList<Question>
+    private var currentQuestionIndex = 0
+    private var selectedAlternativeIndex = -1
+    private var isAnswerChecked = false
+    private var totalScore = 0
     private val alternativesIds = arrayOf(R.id.optionOne, R.id.optionTwo, R.id.optionThree, R.id.optionFour)
 
     private var tvQuestion: TextView? = null
     private var ivImage: ImageView? = null
+    private var vvVideo: VideoView? = null
     private var progressBar: ProgressBar? = null
     private var tvProgress: TextView? = null
     private var btnSubmit: Button? = null
@@ -32,9 +34,13 @@ class LatihanActivity : AppCompatActivity() {
         setContentView(R.layout.activity_latihan)
 
         userName = intent.getStringExtra(Constants.USER_NAME)
+        questionType = intent.getStringExtra(Constants.QUESTION_TYPE)
+
+        questionsList = Constants.getQuestions(questionType ?: Constants.TYPE_MUDAH)
 
         tvQuestion = findViewById(R.id.tvQuestion)
         ivImage = findViewById(R.id.ivImage)
+        vvVideo = findViewById(R.id.vvVideo)
         progressBar = findViewById(R.id.progressBar)
         tvProgress = findViewById(R.id.tvProgress)
         btnSubmit = findViewById(R.id.btnSubmit)
@@ -51,12 +57,10 @@ class LatihanActivity : AppCompatActivity() {
             if (!isAnswerChecked) {
                 val anyAnswerIsChecked = selectedAlternativeIndex != -1
                 if (!anyAnswerIsChecked) {
-                    Toast.makeText(this, "Please, select an alternative", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Tolong, pilih salah satu opsi", Toast.LENGTH_SHORT).show()
                 } else {
                     val currentQuestion = questionsList[currentQuestionIndex]
-                    if (
-                        selectedAlternativeIndex == currentQuestion.correctAnswerIndex
-                    ) {
+                    if (selectedAlternativeIndex == currentQuestion.correctAnswerIndex) {
                         answerView(tvAlternatives!![selectedAlternativeIndex], R.drawable.correct_option_border_bg)
                         totalScore++
                     } else {
@@ -65,7 +69,7 @@ class LatihanActivity : AppCompatActivity() {
                     }
 
                     isAnswerChecked = true
-                    btnSubmit?.text = if (currentQuestionIndex == questionsList.size - 1) "FINISH" else "GO TO NEXT QUESTION"
+                    btnSubmit?.text = if (currentQuestionIndex == questionsList.size - 1) "Selesai" else "MENUJU PERTANYAAN SELANJUTNYA"
                     selectedAlternativeIndex = -1
                 }
             } else {
@@ -88,7 +92,7 @@ class LatihanActivity : AppCompatActivity() {
         tvAlternatives?.let {
             for (optionIndex in it.indices) {
                 it[optionIndex].let {
-                    it.setOnClickListener{
+                    it.setOnClickListener {
                         if (!isAnswerChecked) {
                             selectedAlternativeView(it as TextView, optionIndex)
                         }
@@ -103,8 +107,23 @@ class LatihanActivity : AppCompatActivity() {
 
         // Render Question Text
         tvQuestion?.text = questionsList[currentQuestionIndex].questionText
-        // Render Question Image
-        ivImage?.setImageResource(questionsList[currentQuestionIndex].image)
+
+        // Check if the question has an image or video
+        val currentQuestion = questionsList[currentQuestionIndex]
+        if (currentQuestion.isVideo) {
+            ivImage?.visibility = ImageView.GONE
+            vvVideo?.visibility = VideoView.VISIBLE
+            vvVideo?.setVideoURI(Uri.parse(currentQuestion.mediaUri))
+            vvVideo?.start()
+            vvVideo?.setOnCompletionListener {
+                vvVideo?.start()
+            }
+        } else {
+            ivImage?.visibility = ImageView.VISIBLE
+            vvVideo?.visibility = VideoView.GONE
+            ivImage?.setImageResource(currentQuestion.image)
+        }
+
         // progressBar
         progressBar?.progress = currentQuestionIndex + 1
         // Text of progress bar
@@ -114,7 +133,7 @@ class LatihanActivity : AppCompatActivity() {
             tvAlternatives!![alternativeIndex].text = questionsList[currentQuestionIndex].alternatives[alternativeIndex]
         }
 
-        btnSubmit?.text = if (currentQuestionIndex == questionsList.size - 1) "FINISH" else "SUBMIT"
+        btnSubmit?.text = if (currentQuestionIndex == questionsList.size - 1) "SELESAI" else "JAWAB"
     }
 
     private fun defaultAlternativesView() {

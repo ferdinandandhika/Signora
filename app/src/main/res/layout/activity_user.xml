@@ -100,16 +100,17 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="111dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_gallery" />
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/gallery" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ganti Foto Profil"
                     android:fontFamily="@font/poppins_extrabold"
-                    android:textColor="@color/secondary"
+                    android:textColor="@color/primary"
                     android:layout_marginTop="10dp"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -146,7 +147,7 @@
                     android:text="Ubah Username"
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
-                    android:textColor="@color/secondary"
+                    android:textColor="@color/primary"
 
                     android:textSize="16sp" />
             </LinearLayout>
@@ -182,7 +183,7 @@
                     android:text="Ubah Password"
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
-                    android:textColor="@color/secondary"
+                    android:textColor="@color/primary"
                     android:textSize="16sp"  />
 
             </LinearLayout>
@@ -218,7 +219,7 @@
                     android:text="Logout"
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
-                    android:textColor="@color/secondary"
+                    android:textColor="@color/primary"
 
                     android:textSize="16sp" />
             </LinearLayout>

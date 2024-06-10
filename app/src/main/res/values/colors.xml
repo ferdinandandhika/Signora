@@ -6,6 +6,10 @@
     <color name="secondary">#3BABFD</color>
     <color name="grey">#7E8387</color>
     <color name="background">#E7F4FE</color>
+    <color name="green">#1EFD27</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="red">#F44336</color>
+
 
     <!-- Profile Image -->
     <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">

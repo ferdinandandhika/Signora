@@ -4,6 +4,8 @@
         <item>@font/poppins_bold</item>
         <item>@font/poppins_bold_italic</item>
         <item>@font/poppins_extrabold</item>
+        <item>@font/poppins_light</item>
+        <item>@font/poppins_medium</item>
         <item>@font/poppins_medium_italic</item>
         <item>@font/poppins_semibold</item>
         <item>@font/poppins_semibold_italic</item>

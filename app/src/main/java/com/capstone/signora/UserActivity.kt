@@ -178,13 +178,34 @@ class UserActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun deleteSessionToken(callback: () -> Unit) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
+            val tokenRef = database.getReference("users").child(user.uid).child("sessionToken")
+            tokenRef.removeValue()
+                .addOnSuccessListener {
+                    Log.d("UserActivity", "Session token deleted successfully")
+                    callback()
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("UserActivity", "Failed to delete session token", exception)
+                    callback()
+                }
+        } else {
+            callback()
+        }
+    }
+
     private fun logout() {
-        FirebaseAuth.getInstance().signOut()
-        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
-        startActivity(Intent(this, WelcomeActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        })
-        finish()
+        deleteSessionToken {
+            FirebaseAuth.getInstance().signOut()
+            val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+            startActivity(Intent(this, WelcomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
+        }
     }
 }

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.frontend.latihan.QuizActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/back_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="8dp"
+                android:contentDescription="@string/camera"
+                android:layout_margin="10dp"
+                android:src="@drawable/baseline_arrow_back_ios_24"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- CardView 1 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardMudah"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/item1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/mudah"
+                android:layout_width="263dp"
+                android:layout_height="91dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/camera"
+                android:fontFamily="@font/poppins_extrabold"
+
+                android:text="Mudah"
+                android:textColor="@color/green"
+                android:textSize="60dp" />
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView 2 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSedang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="@color/yellow"
+        app:layout_constraintTop_toBottomOf="@id/cardMudah"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/item2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/sedang"
+                android:layout_width="263dp"
+                android:layout_height="91dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/camera"
+                android:fontFamily="@font/poppins_extrabold"
+
+                android:text="Sedang"
+                android:textColor="@color/yellow"
+                android:textSize="60dp" />
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView 3 -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSulit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/cardSedang"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/item3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@android:color/white"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/sulit"
+                android:layout_width="263dp"
+                android:layout_height="91dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/camera"
+                android:fontFamily="@font/poppins_extrabold"
+
+                android:text="Sulit"
+                android:textColor="@color/red"
+                android:textSize="60dp" />
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

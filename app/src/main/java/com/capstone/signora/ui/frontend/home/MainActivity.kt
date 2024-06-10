@@ -14,13 +14,13 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.capstone.signora.FullScreenImageDialogFragment
-import com.capstone.signora.TutorialActivity
 import com.capstone.signora.ui.activity.ForumActivity
 import com.capstone.signora.CameraX
+import com.capstone.signora.ui.frontend.latihan.QuizActivity
 import com.capstone.signora.ui.frontend.istilah.IstilahActivity
-import com.capstone.signora.ui.frontend.latihan.LatihanActivity
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity() {
         welcomeTextView = findViewById(R.id.welcomeText)
         profileImageView = findViewById(R.id.profileImage)
         val welcomeMessage = "Selamat datang!"
-        
+
         animateText(welcomeMessage)
-        
+
         // Load user data from SharedPreferences
         val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         val name = sharedPreferences.getString("name", "Nama Pengguna")
@@ -97,6 +97,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Add this block to handle atas_main click by Muhammad Adi Kurnianto
+        val atasMain = findViewById<ConstraintLayout>(R.id.atas_main)
+        atasMain.setOnClickListener {
+            val intent = Intent(this, UserActivity::class.java)
+            startActivity(intent)
+        }
+
         // Add this block to handle istilah CardView click by Muhammad Adi Kurnianto
         val istilahCardView = findViewById<CardView>(R.id.istilah)
         istilahCardView.setOnClickListener {
@@ -104,17 +111,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Add this block to handle tutorial CardView click by Muhammad Adi Kurnianto
-        val tutorialCardView = findViewById<CardView>(R.id.tutorial)
-        tutorialCardView.setOnClickListener {
-            val intent = Intent(this, TutorialActivity::class.java)
-            startActivity(intent)
-        }
-
         // Add this block to handle latihan harian CardView click by Muhammad Adi Kurnianto
         val latihanCardView = findViewById<CardView>(R.id.latihan)
         latihanCardView.setOnClickListener {
-            val intent = Intent(this, LatihanActivity::class.java)
+            val intent = Intent(this, QuizActivity::class.java)
             startActivity(intent)
         }
 

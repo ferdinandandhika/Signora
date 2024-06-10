@@ -36,7 +36,17 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:contentDescription="Quiz Image"
+            android:background="@drawable/edittext_background"
             tools:src="@drawable/c_isyarat" />
+
+
+        <VideoView
+            android:id="@+id/vvVideo"
+            android:layout_width="332dp"
+            android:layout_height="249dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,7 +122,7 @@
             android:backgroundTint="@color/secondary"
             android:textColor="@color/white"
             android:fontFamily="@font/poppins_bold"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:textSize="20dp"
             android:paddingVertical="10dp"
             />

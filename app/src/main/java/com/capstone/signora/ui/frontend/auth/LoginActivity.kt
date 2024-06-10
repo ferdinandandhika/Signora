@@ -5,27 +5,33 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.capstone.signora.ForgetActivity
 import com.capstone.signora.R
 import com.capstone.signora.ui.frontend.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private var isPasswordVisible = false
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+        progressBar = findViewById(R.id.progressBar)
 
         testFirestoreQuery()
 
@@ -34,6 +40,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButton: AppCompatButton = findViewById(R.id.login_button)
         val daftarButton: TextView = findViewById(R.id.button_register)
         val showPasswordButton: ImageButton = findViewById(R.id.show_password_button)
+        val forgotPasswordButton: TextView = findViewById((R.id.forgot_password_link))
 
         daftarButton.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -48,8 +55,13 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
+            showProgressBar()
             loginUser(usernameOrEmail, password)
+        }
+
+        forgotPasswordButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ForgetActivity::class.java)
+            startActivity(intent)
         }
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -78,7 +90,9 @@ class LoginActivity : AppCompatActivity() {
         if (android.util.Patterns.EMAIL_ADDRESS.matcher(usernameOrEmail).matches()) {
             auth.signInWithEmailAndPassword(usernameOrEmail, password)
                 .addOnCompleteListener(this) { task ->
+                    hideProgressBar()
                     if (task.isSuccessful) {
+                        Toast.makeText(this, "Berhasil login", Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
                         if (user != null) {
                             val email = user.email
@@ -89,7 +103,7 @@ class LoginActivity : AppCompatActivity() {
                             startMainActivity()
                         }
                     } else {
-                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Login gagal, coba kembali: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
@@ -97,7 +111,9 @@ class LoginActivity : AppCompatActivity() {
                 if (email != null) {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
+                            hideProgressBar()
                             if (task.isSuccessful) {
+                                Toast.makeText(this, "Berhasil login", Toast.LENGTH_SHORT).show()
                                 val user = auth.currentUser
                                 if (user != null) {
                                     fetchUserNameAndSave(user.uid, email) {
@@ -107,11 +123,12 @@ class LoginActivity : AppCompatActivity() {
                                     startMainActivity()
                                 }
                             } else {
-                                Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Login gagal, coba kembali: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
                 } else {
-                    Toast.makeText(this, "Username not found", Toast.LENGTH_SHORT).show()
+                    hideProgressBar()
+                    Toast.makeText(this, "Username tidak ditemukan", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -185,5 +202,28 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+    }
+
+    private fun saveSessionToken(token: String) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
+            val tokenRef = database.getReference("users").child(user.uid).child("sessionToken")
+            tokenRef.setValue(token)
+                .addOnSuccessListener {
+                    Log.d("LoginActivity", "Session token saved successfully")
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("LoginActivity", "Failed to save session token", exception)
+                }
+        }
     }
 }

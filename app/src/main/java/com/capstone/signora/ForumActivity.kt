@@ -52,12 +52,6 @@ class ForumActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_forum)
 
-        // Set padding to handle system insets by Muhammad Adi Kurnianto
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         // Initialize RecyclerView by Muhammad Adi Kurnianto
         recyclerView = findViewById(R.id.recyclerView)

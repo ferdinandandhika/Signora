@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +23,15 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private var isPasswordVisible = false
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        progressBar = findViewById(R.id.progressBar)
 
         val nameEditText: EditText = findViewById(R.id.nama)
         val emailEditText: EditText = findViewById(R.id.email)
@@ -61,20 +67,21 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            showProgressBar()
             registerUser(name, email, password)
         }
     }
 
     private fun registerUser(name: String, email: String, password: String) {
-        // Check if the username already exists by Muhammad Adi Kurnianto
         db.collection("users").whereEqualTo("name", name).get()
             .addOnSuccessListener { documents ->
+                hideProgressBar()
                 if (!documents.isEmpty) {
                     Toast.makeText(this, "Username already taken", Toast.LENGTH_SHORT).show()
                 } else {
-                    // Proceed with registration if username is not taken by Muhammad Adi Kurnianto
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
+                            hideProgressBar()
                             if (task.isSuccessful) {
                                 val user = hashMapOf(
                                     "name" to name,
@@ -104,7 +111,16 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
             .addOnFailureListener { e ->
+                hideProgressBar()
                 Toast.makeText(this, "Failed to check username: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
     }
 }

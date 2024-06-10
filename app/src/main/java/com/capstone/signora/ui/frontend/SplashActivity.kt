@@ -1,5 +1,6 @@
 package com.capstone.signora.ui.frontend
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,27 +12,24 @@ import com.capstone.signora.ui.frontend.pager.PagerActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
-    private val splash_delay: Long = 2000
+
+    private val splash_delay: Long = 2000 // 2 detik
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        supportActionBar?.hide()
-
-        val sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
-        val isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false)
-
         Handler().postDelayed({
+            val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+            val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+
             if (isFirstRun) {
-
                 startActivity(Intent(this, PagerActivity::class.java))
-                sharedPreferences.edit().putBoolean("isFirstRun", false).apply()
             } else {
+                val auth = FirebaseAuth.getInstance()
+                val user = auth.currentUser
 
-                val user = FirebaseAuth.getInstance().currentUser
-                if (user != null && isLoggedIn) {
+                if (user != null) {
                     startActivity(Intent(this, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this, WelcomeActivity::class.java))

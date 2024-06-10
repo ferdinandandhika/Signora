@@ -6,4 +6,6 @@ data class Question(
     val image: Int,
     val alternatives: ArrayList<String>,
     val correctAnswerIndex: Int,
+    val isVideo: Boolean = false,
+    val mediaUri: String? = null
 )

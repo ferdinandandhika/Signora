@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".PasswordActivity"
+android:background="@color/background">
+
+
+<ImageView
+    android:id="@+id/bola"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/bola"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<ImageButton
+    android:id="@+id/back_button"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:background="@drawable/button_bg"
+    android:contentDescription="@string/camera"
+    android:scaleType="centerInside"
+    android:layout_marginTop="15dp"
+    android:paddingLeft="8dp"
+    android:layout_marginLeft="15dp"
+    android:src="@drawable/baseline_arrow_back_ios_24"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+<ImageView
+    android:id="@+id/logo"
+    android:layout_width="320dp"
+    android:layout_height="289dp"
+    android:paddingTop="40dp"
+    android:src="@drawable/logo"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<TextView
+    android:id="@+id/textView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/poppins_extrabold"
+    android:shadowColor="@color/white"
+    android:shadowDx="2"
+    android:shadowDy="2"
+    android:shadowRadius="1.5"
+    android:text="Lupa Password"
+    android:textColor="#006EBE"
+    android:textSize="40sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/logo" />
+
+<com.capstone.signora.ui.frontend.auth.customview.EmailEditText
+    android:id="@+id/email"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="32dp"
+    android:background="@drawable/edittext_background"
+    android:fontFamily="@font/poppins_semibold"
+    android:hint="Email anda"
+    android:padding="16dp"
+    android:textColorHint="#8A8A8A"
+    android:textSize="16sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+
+<com.capstone.signora.ui.frontend.auth.customview.PasswordEditText
+    android:id="@+id/passwordbaru"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="32dp"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/edittext_background"
+    android:fontFamily="@font/poppins_semibold"
+    android:hint="Password baru anda"
+    android:padding="16dp"
+    android:textColorHint="#8A8A8A"
+    android:textSize="16sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/email" />
+
+<ImageButton
+    android:id="@+id/show_password_button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="15dp"
+    android:background="@drawable/baseline_remove_red_eye_24"
+    android:contentDescription="@string/show_password"
+    app:layout_constraintBottom_toBottomOf="@+id/passwordbaru"
+    app:layout_constraintEnd_toEndOf="@+id/passwordbaru"
+    app:layout_constraintTop_toTopOf="@+id/passwordbaru" />
+
+
+
+<androidx.appcompat.widget.AppCompatButton
+    android:id="@+id/ganti_button"
+    android:layout_width="141dp"
+    android:layout_height="55dp"
+    android:layout_marginTop="40dp"
+    android:textSize="25dp"
+    android:textAllCaps="false"
+    android:background="@drawable/btn_blue_selector"
+    android:text="@string/ganti"
+    android:fontFamily="@font/poppins_extrabold"
+    android:textColor="@color/white"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/passwordbaru" />
+
+
+<ImageView
+    android:id="@+id/bottombar_air"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:scaleType="fitXY"
+    android:src="@drawable/bottombar_air"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_percent="0.3"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"/>
+
+
+<ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
