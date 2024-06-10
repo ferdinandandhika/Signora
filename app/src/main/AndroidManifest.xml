@@ -64,9 +64,7 @@
         <activity
             android:name=".TutorialActivity"
             android:exported="false" />
-        <activity
-            android:name=".DaftarIstilahActivity"
-            android:exported="false" />
+
         <activity
             android:name=".PasswordActivity"
             android:exported="false" />
