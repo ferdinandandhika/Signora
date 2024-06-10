@@ -42,6 +42,7 @@
     <string name="title_activity_camera_x">CameraX</string>
 
     <string name="instruction">Arahkan kamera untuk memulai terjemahkan</string>
+    <string name="default_web_client_id">100849197659-hn8k6hhc3p5a4jq5gmca14mlhpcrtn54.apps.googleusercontent.com</string>
 
     <string-array name="gambarAlphabet">
         <item>@drawable/a</item>

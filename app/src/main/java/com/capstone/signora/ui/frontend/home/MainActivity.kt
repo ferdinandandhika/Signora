@@ -26,6 +26,7 @@ import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     private lateinit var welcomeTextView: TextView
@@ -54,18 +55,8 @@ class MainActivity : AppCompatActivity() {
 
         animateText(welcomeMessage)
 
-        // Load user data from SharedPreferences
-        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString("name", "Nama Pengguna")
-        val userEmail = sharedPreferences.getString("userEmail", "email")
-
-        val userNameTextView = findViewById<TextView>(R.id.userName)
-        userNameTextView.text = name
-
-        Log.d("MainActivity", "name: $name, userEmail: $userEmail")
-
-        // Load profile image from Firebase by Muhammad Adi Kurnianto
-        loadProfileImage()
+        // Load user data from Firebase Authentication and Firestore
+        loadUserData()
 
         // Add this block to handle profile image click by Muhammad Adi Kurnianto
         profileImageView.setOnClickListener {
@@ -148,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val newUsername = intent?.getStringExtra("newUsername")
                 if (newUsername != null) {
-                    userNameTextView.text = newUsername
+                    findViewById<TextView>(R.id.userName).text = newUsername
                 }
             }
         }
@@ -200,6 +191,27 @@ class MainActivity : AppCompatActivity() {
                     Log.e("MainActivity", "Failed to load profile image URL", error.toException())
                 }
             })
+        }
+    }
+
+    private fun loadUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val db = FirebaseFirestore.getInstance()
+            db.collection("users").document(user.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val name = document.getString("name")
+                        val email = document.getString("email")
+                        findViewById<TextView>(R.id.userName).text = name
+                        Log.d("MainActivity", "Loaded user data: name = $name, email = $email")
+                    } else {
+                        Log.d("MainActivity", "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("MainActivity", "get failed with ", exception)
+                }
         }
     }
 

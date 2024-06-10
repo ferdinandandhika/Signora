@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "100849197659",
+    "firebase_url": "https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "signora-e8d6b",
     "storage_bucket": "signora-e8d6b.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.capstone.signora"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "100849197659-mq46sts8frfmc0kqp33cgo1hdl342uh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.signora",
+            "certificate_hash": "ba54c2251d6c816e707cc651c229e87a8564e273"
+          }
+        },
+        {
+          "client_id": "100849197659-hn8k6hhc3p5a4jq5gmca14mlhpcrtn54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBZNc2tloB-UlZz4W66CE2fKJVJeNOFh_w"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100849197659-hn8k6hhc3p5a4jq5gmca14mlhpcrtn54.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

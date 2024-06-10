@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 
 class UserActivity : AppCompatActivity() {
     private lateinit var userNameTextView: TextView
@@ -39,19 +40,8 @@ class UserActivity : AppCompatActivity() {
         userEmailTextView = findViewById(R.id.email)
         profileImageView = findViewById(R.id.profileImage)
 
-        // Load user data from SharedPreferences
-        val sharedPreferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString("name", "Nama Pengguna")
-        val userEmail = sharedPreferences.getString("userEmail", "email")
-
-        Log.d("UserActivity", "name: $name, userEmail: $userEmail")
-
-        userNameTextView.text = name
-        userEmailTextView.text = userEmail
-
-
-        // Load profile image from Firebase by Muhammad Adi Kurnianto
-        loadProfileImage()
+        // Load user data from Firebase Authentication and Firestore
+        loadUserData()
 
         // Handle back button click by Muhammad Adi Kurnianto
         val backButton = findViewById<ImageButton>(R.id.back_button)
@@ -129,6 +119,29 @@ class UserActivity : AppCompatActivity() {
         ubahPasswordCard.setOnClickListener {
             val intent = Intent(this, PasswordActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun loadUserData() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val db = FirebaseFirestore.getInstance()
+            val userRef = db.collection("users").document(user.uid)
+            userRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val name = document.getString("name")
+                        val email = document.getString("email")
+                        userNameTextView.text = name
+                        userEmailTextView.text = email
+                        Log.d("UserActivity", "User data: name=$name, email=$email")
+                    } else {
+                        Log.d("UserActivity", "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("UserActivity", "get failed with ", exception)
+                }
         }
     }
 

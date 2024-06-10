@@ -94,6 +94,7 @@ dependencies {
     implementation (libs.tensorflow.lite.gpu)
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.metadata)
+    implementation (libs.play.services.auth)
     testImplementation(libs.junit)
     implementation (libs.glide)
     androidTestImplementation(libs.androidx.junit)

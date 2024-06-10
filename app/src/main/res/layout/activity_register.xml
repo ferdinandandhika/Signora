@@ -207,7 +207,7 @@
         app:layout_constraintTop_toBottomOf="@+id/blue_line" />
 
     <ImageButton
-        android:id="@+id/gmailbutton"
+        android:id="@+id/google_button"
         android:layout_width="52dp"
         android:layout_height="49dp"
         android:layout_marginTop="10dp"

@@ -16,15 +16,26 @@ import androidx.appcompat.widget.AppCompatButton
 import com.capstone.signora.ForgetActivity
 import com.capstone.signora.R
 import com.capstone.signora.ui.frontend.home.MainActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
     private var isPasswordVisible = false
     private lateinit var progressBar: ProgressBar
+
+    companion object {
+        private const val RC_SIGN_IN = 9001
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +44,21 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         progressBar = findViewById(R.id.progressBar)
 
-        testFirestoreQuery()
+        // Configure Google Sign-In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         val emailEditText: EditText = findViewById(R.id.email)
         val passwordEditText: EditText = findViewById(R.id.password)
         val loginButton: AppCompatButton = findViewById(R.id.login_button)
         val daftarButton: TextView = findViewById(R.id.button_register)
         val showPasswordButton: ImageButton = findViewById(R.id.show_password_button)
-        val forgotPasswordButton: TextView = findViewById((R.id.forgot_password_link))
+        val forgotPasswordButton: TextView = findViewById(R.id.forgot_password_link)
+        val googleButton: ImageButton = findViewById(R.id.google_button)
 
         daftarButton.setOnClickListener {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
@@ -64,13 +82,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            // User is signed in by Muhammad Adi Kurnianto
-            Log.d("LoginActivity", "User is signed in: ${user.uid}")
-        } else {
-            // No user is signed in by Muhammad Adi Kurnianto
-            Log.d("LoginActivity", "No user is signed in")
+        googleButton.setOnClickListener {
+            signInWithGoogle()
         }
 
         showPasswordButton.setOnClickListener {
@@ -86,13 +99,75 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun signInWithGoogle() {
+        googleSignInClient.signOut().addOnCompleteListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                checkIfUserExists(account)
+            } catch (e: ApiException) {
+                Log.w("LoginActivity", "Google sign in failed", e)
+                Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun checkIfUserExists(account: GoogleSignInAccount) {
+        val db = FirebaseFirestore.getInstance()
+        val email = account.email
+        if (email != null) {
+            db.collection("users").whereEqualTo("email", email).get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        firebaseAuthWithGoogle(account)
+                    } else {
+                        Toast.makeText(this, "Account not registered. Please register first.", Toast.LENGTH_SHORT).show()
+                        hideProgressBar()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("LoginActivity", "Error checking user existence: ", exception)
+                    Toast.makeText(this, "Error checking user existence: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    hideProgressBar()
+                }
+        } else {
+            Toast.makeText(this, "Email not found in Google account", Toast.LENGTH_SHORT).show()
+            hideProgressBar()
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    Log.d("LoginActivity", "signInWithCredential:success")
+                    val user = auth.currentUser
+                    startMainActivity()
+                } else {
+                    Log.w("LoginActivity", "signInWithCredential:failure", task.exception)
+                    Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
+                    hideProgressBar()
+                }
+            }
+    }
+
     private fun loginUser(usernameOrEmail: String, password: String) {
-        if (android.util.Patterns.EMAIL_ADDRESS.matcher(usernameOrEmail).matches()) {
+        if (usernameOrEmail.contains("@")) {
             auth.signInWithEmailAndPassword(usernameOrEmail, password)
                 .addOnCompleteListener(this) { task ->
                     hideProgressBar()
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Berhasil login", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
                         if (user != null) {
                             val email = user.email
@@ -103,7 +178,7 @@ class LoginActivity : AppCompatActivity() {
                             startMainActivity()
                         }
                     } else {
-                        Toast.makeText(this, "Login gagal, coba kembali: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
@@ -113,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(this) { task ->
                             hideProgressBar()
                             if (task.isSuccessful) {
-                                Toast.makeText(this, "Berhasil login", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
                                 val user = auth.currentUser
                                 if (user != null) {
                                     fetchUserNameAndSave(user.uid, email) {
@@ -123,7 +198,7 @@ class LoginActivity : AppCompatActivity() {
                                     startMainActivity()
                                 }
                             } else {
-                                Toast.makeText(this, "Login gagal, coba kembali: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                             }
                         }
                 } else {
@@ -181,20 +256,6 @@ class LoginActivity : AppCompatActivity() {
             .addOnFailureListener { exception ->
                 Log.e("LoginActivity", "Error getting documents: ", exception)
                 callback(null)
-            }
-    }
-
-    private fun testFirestoreQuery() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users")
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    Log.d("LoginActivity", "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.e("LoginActivity", "Error getting documents: ", exception)
             }
     }
 
