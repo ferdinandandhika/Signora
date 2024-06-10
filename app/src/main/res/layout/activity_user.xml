@@ -102,7 +102,7 @@
                 <ImageView
                     android:layout_width="111dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/baseline_photo_library_24" />
+                    android:src="@drawable/ic_gallery" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -130,12 +130,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <ImageView
-                    android:layout_width="111dp"
-                    android:layout_height="59dp"
-                    android:src="@drawable/baseline_person_24" />
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/account" />
 
                 <TextView
                     android:id="@+id/change_username_button"
@@ -145,7 +147,7 @@
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
                     android:textColor="@color/secondary"
-                    android:layout_marginTop="10dp"
+
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -168,9 +170,10 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="111dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/baseline_lock_person_24" />
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/password" />
 
                 <TextView
                     android:id="@+id/change_password_button"
@@ -180,8 +183,8 @@
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
                     android:textColor="@color/secondary"
-                    android:layout_marginTop="10dp"
                     android:textSize="16sp"  />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -203,9 +206,11 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="111dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/baseline_logout_24" />
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logout"
+                    android:paddingLeft="12dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -214,7 +219,7 @@
                     android:textAlignment="center"
                     android:fontFamily="@font/poppins_extrabold"
                     android:textColor="@color/secondary"
-                    android:layout_marginTop="10dp"
+
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>

@@ -50,7 +50,6 @@ class UserActivity : AppCompatActivity() {
         userEmailTextView.text = userEmail
 
 
-
         // Load profile image from Firebase by Muhammad Adi Kurnianto
         loadProfileImage()
 

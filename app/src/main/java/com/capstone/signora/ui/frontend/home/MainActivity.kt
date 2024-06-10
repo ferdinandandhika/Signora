@@ -7,22 +7,20 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.signora.R
 import de.hdodenhof.circleimageview.CircleImageView
 import android.os.Handler
 import android.os.Looper
-import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
-import com.capstone.signora.DaftarIstilahActivity
 import com.capstone.signora.FullScreenImageDialogFragment
 import com.capstone.signora.LatihanActivity
 import com.capstone.signora.TutorialActivity
 import com.capstone.signora.ui.activity.ForumActivity
 import com.capstone.signora.CameraX
+import com.capstone.signora.ui.frontend.istilah.IstilahActivity
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         // Add this block to handle istilah CardView click by Muhammad Adi Kurnianto
         val istilahCardView = findViewById<CardView>(R.id.istilah)
         istilahCardView.setOnClickListener {
-            val intent = Intent(this, DaftarIstilahActivity::class.java)
+            val intent = Intent(this, IstilahActivity::class.java)
             startActivity(intent)
         }
 

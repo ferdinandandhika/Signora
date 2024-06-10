@@ -30,6 +30,7 @@
 
     <string name="title_onboarding_5">Komunitas Inklusif</string>
     <string name="description_onboarding_5">Bergabunglah dengan komunitas yang mendukung dan berbagi pengetahuan tentang bahasa isyarat.</string>
+
     <string name="Daftar">Daftar</string>
     <string name="masuk">Login</string>
     <string name="show_password">show password</string>
@@ -39,8 +40,65 @@
     <string name="ganti">Ganti</string>
     <string name="title_activity_add_discussion">AddDiscussion</string>
     <string name="title_activity_camera_x">CameraX</string>
-    
+
     <string name="instruction">Arahkan kamera untuk memulai terjemahkan</string>
 
+    <string-array name="gambarAlphabet">
+        <item>@drawable/a</item>
+        <item>@drawable/b</item>
+        <item>@drawable/c</item>
+        <item>@drawable/d</item>
+        <item>@drawable/e</item>
+        <item>@drawable/f</item>
+        <item>@drawable/g</item>
+        <item>@drawable/h</item>
+        <item>@drawable/i</item>
+        <item>@drawable/j</item>
+        <item>@drawable/k</item>
+        <item>@drawable/l</item>
+        <item>@drawable/m</item>
+        <item>@drawable/n</item>
+        <item>@drawable/o</item>
+        <item>@drawable/p</item>
+        <item>@drawable/q</item>
+        <item>@drawable/r</item>
+        <item>@drawable/s</item>
+        <item>@drawable/t</item>
+        <item>@drawable/u</item>
+        <item>@drawable/v</item>
+        <item>@drawable/w</item>
+        <item>@drawable/x</item>
+        <item>@drawable/y</item>
+        <item>@drawable/z</item>
+    </string-array>
+
+    <string-array name="gambarIsyarat">
+        <item>@drawable/a_isyarat</item>
+        <item>@drawable/b_isyarat</item>
+        <item>@drawable/c_isyarat</item>
+        <item>@drawable/d_isyarat</item>
+        <item>@drawable/e_isyarat</item>
+        <item>@drawable/f_isyarat</item>
+        <item>@drawable/g_isyarat</item>
+        <item>@drawable/h_isyarat</item>
+        <item>@drawable/i_isyarat</item>
+        <item>@drawable/j_isyarat</item>
+        <item>@drawable/k_isyarat</item>
+        <item>@drawable/l_isyarat</item>
+        <item>@drawable/m_isyarat</item>
+        <item>@drawable/n_isyarat</item>
+        <item>@drawable/o_isyarat</item>
+        <item>@drawable/p_isyarat</item>
+        <item>@drawable/q_isyarat</item>
+        <item>@drawable/r_isyarat</item>
+        <item>@drawable/s_isyarat</item>
+        <item>@drawable/t_isyarat</item>
+        <item>@drawable/u_isyarat</item>
+        <item>@drawable/v_isyarat</item>
+        <item>@drawable/w_isyarat</item>
+        <item>@drawable/x_isyarat</item>
+        <item>@drawable/y_isyarat</item>
+        <item>@drawable/z_isyarat</item>
+    </string-array>
 
 </resources>
