@@ -7,10 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.capstone.signora.R
@@ -49,32 +46,29 @@ class ForumActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseFirestore.getInstance().clearPersistence()
-        enableEdgeToEdge()
         setContentView(R.layout.activity_forum)
 
-
-        // Initialize RecyclerView by Muhammad Adi Kurnianto
+        // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView)
-        postAdapter = PostAdapter(posts, this) // Pass 'this' as the activity
+        postAdapter = PostAdapter(posts, this)
         val layoutManager = LinearLayoutManager(this)
-        layoutManager.reverseLayout = true // Reverse layout to show items from bottom to top by Muhammad Adi Kurnianto
-        layoutManager.stackFromEnd = true // Stack items from end by Muhammad Adi Kurnianto
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = postAdapter
 
         // Fetch profile image URL
         fetchProfileImageUrl()
 
-        // Fetch posts from Firestore by Muhammad Adi Kurnianto
+        // Fetch posts from Firestore
         fetchPosts()
 
-        // Handle posting new post by Muhammad Adi Kurnianto
+        // Handle posting new post
         editTextPost = findViewById(R.id.editTextPost)
         buttonPost = findViewById(R.id.buttonPost)
         buttonPost.setOnClickListener {
             val postContent = editTextPost.text.toString().trim()
             if (postContent.isEmpty()) {
-                // Tampilkan pesan kesalahan menggunakan Toast
                 Toast.makeText(this, "Post content cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -83,7 +77,7 @@ class ForumActivity : AppCompatActivity() {
         }
 
         // Start the clear chat runnable
-        handler.postDelayed(clearChatRunnable, 60000) // Start after 60 seconds
+        handler.postDelayed(clearChatRunnable, 60000)
     }
 
     private fun fetchProfileImageUrl() {
@@ -91,10 +85,12 @@ class ForumActivity : AppCompatActivity() {
         if (user != null) {
             val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
             val databaseRef = database.getReference("users").child(user.uid).child("profileImageUrl")
-            databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            databaseRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     profileImageUrl = snapshot.getValue(String::class.java)
                     Log.d("ForumActivity", "Profile image URL: $profileImageUrl")
+                    // Notify the adapter to refresh the profile image
+                    postAdapter.updateProfileImageUrl(profileImageUrl)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -106,7 +102,7 @@ class ForumActivity : AppCompatActivity() {
 
     private fun fetchPosts() {
         postsListener = firestore.collection("posts")
-            .orderBy("timestamp", Query.Direction.DESCENDING) // Order by timestamp in descending order
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.e("ForumActivity", "Error fetching posts: ${e.message}")
@@ -120,7 +116,7 @@ class ForumActivity : AppCompatActivity() {
                         posts.add(post)
                     }
                     postAdapter.notifyDataSetChanged()
-                    recyclerView.scrollToPosition(0) // Scroll to the latest post
+                    recyclerView.scrollToPosition(0)
                     Log.d("ForumActivity", "Posts fetched: ${posts.size}")
                 }
             }
@@ -161,7 +157,7 @@ class ForumActivity : AppCompatActivity() {
             .addOnSuccessListener { documentReference ->
                 Log.d("ForumActivity", "Post created with ID: ${documentReference.id}")
                 editTextPost.text.clear()
-                recyclerView.scrollToPosition(0) // Scroll to the latest post after adding
+                recyclerView.scrollToPosition(0)
             }
             .addOnFailureListener { e ->
                 Log.e("ForumActivity", "Error creating post: ${e.message}")
@@ -169,12 +165,10 @@ class ForumActivity : AppCompatActivity() {
     }
 
     private fun clearChat() {
-        // Clear local list
         posts.clear()
         postAdapter.notifyDataSetChanged()
         Log.d("ForumActivity", "Chat cleared")
 
-        // Clear Firestore collection
         clearFirestorePosts()
     }
 
@@ -200,6 +194,6 @@ class ForumActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         postsListener?.remove()
-        handler.removeCallbacks(clearChatRunnable) // Stop the clear chat runnable
+        handler.removeCallbacks(clearChatRunnable)
     }
 }

@@ -90,7 +90,7 @@
             android:fontFamily="@font/poppins_bold_italic"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="ini contoh nama"
+            android:text=""
             app:layout_constraintStart_toEndOf="@+id/profileImage"
             app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
     </androidx.constraintlayout.widget.ConstraintLayout>

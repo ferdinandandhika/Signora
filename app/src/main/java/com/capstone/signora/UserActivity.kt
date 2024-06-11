@@ -42,6 +42,7 @@ class UserActivity : AppCompatActivity() {
 
         // Load user data from Firebase Authentication and Firestore
         loadUserData()
+        loadProfileImage()
 
         // Handle back button click by Muhammad Adi Kurnianto
         val backButton = findViewById<ImageButton>(R.id.back_button)
@@ -91,6 +92,7 @@ class UserActivity : AppCompatActivity() {
                 if (imageUrl != null) {
                     Log.d("UserActivity", "Profile image URL received: $imageUrl")
                     Glide.with(this@UserActivity).load(imageUrl).into(profileImageView)
+                    loadProfileImage()
                 }
             }
         }

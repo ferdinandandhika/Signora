@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         // Load user data from Firebase Authentication and Firestore
         loadUserData()
+        loadProfileImage()
 
         // Add this block to handle profile image click by Muhammad Adi Kurnianto
         profileImageView.setOnClickListener {
@@ -129,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                 val imageUrl = intent?.getStringExtra("imageUrl")
                 if (imageUrl != null) {
                     Glide.with(this@MainActivity).load(imageUrl).into(profileImageView)
+                    loadProfileImage()
                 }
             }
         }

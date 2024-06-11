@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentActivity
 
 class PostAdapter(private val posts: List<Post>, private val activity: FragmentActivity) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
+    private var profileImageUrl: String? = null
+
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.nameTextView)
         val contentTextView: TextView = itemView.findViewById(R.id.contentTextView)
@@ -31,11 +33,12 @@ class PostAdapter(private val posts: List<Post>, private val activity: FragmentA
         holder.contentTextView.text = post.content
 
         // Load profile image using Glide
-        if (post.profileImageUri.isNotEmpty()) {
+        val imageUrl = post.profileImageUri ?: profileImageUrl ?: ""
+        if (imageUrl.isNotEmpty()) {
             Glide.with(holder.profileImageView.context)
-                .load(post.profileImageUri)
+                .load(imageUrl)
                 .placeholder(R.drawable.ic_profile_placeholder)
-                .circleCrop() // Apply circular crop
+                .circleCrop()
                 .into(holder.profileImageView)
         } else {
             holder.profileImageView.setImageResource(R.drawable.ic_profile_placeholder)
@@ -43,10 +46,15 @@ class PostAdapter(private val posts: List<Post>, private val activity: FragmentA
 
         // Set click listener to open full screen image dialog
         holder.profileImageView.setOnClickListener {
-            val dialog = FullScreenImageDialogFragment.newInstance(post.profileImageUri)
+            val dialog = FullScreenImageDialogFragment.newInstance(imageUrl)
             dialog.show(activity.supportFragmentManager, "FullScreenImageDialog")
         }
     }
 
     override fun getItemCount(): Int = posts.size
+
+    fun updateProfileImageUrl(newUrl: String?) {
+        profileImageUrl = newUrl
+        notifyDataSetChanged()
+    }
 }

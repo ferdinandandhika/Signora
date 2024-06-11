@@ -23,7 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
@@ -52,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        val emailEditText: EditText = findViewById(R.id.email)
+        val emailOrUsernameEditText: EditText = findViewById(R.id.email)
         val passwordEditText: EditText = findViewById(R.id.password)
         val loginButton: AppCompatButton = findViewById(R.id.login_button)
         val daftarButton: TextView = findViewById(R.id.button_register)
@@ -66,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButton.setOnClickListener {
-            val usernameOrEmail = emailEditText.text.toString().trim()
+            val usernameOrEmail = emailOrUsernameEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (usernameOrEmail.isEmpty() || password.isEmpty()) {
@@ -113,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
-                checkIfUserExists(account)
+                firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 Log.w("LoginActivity", "Google sign in failed", e)
                 Toast.makeText(this, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -121,43 +120,45 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkIfUserExists(account: GoogleSignInAccount) {
-        val db = FirebaseFirestore.getInstance()
-        val email = account.email
-        if (email != null) {
-            db.collection("users").whereEqualTo("email", email).get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        firebaseAuthWithGoogle(account)
-                    } else {
-                        Toast.makeText(this, "Account not registered. Please register first.", Toast.LENGTH_SHORT).show()
-                        hideProgressBar()
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("LoginActivity", "Error checking user existence: ", exception)
-                    Toast.makeText(this, "Error checking user existence: ${exception.message}", Toast.LENGTH_SHORT).show()
-                    hideProgressBar()
-                }
-        } else {
-            Toast.makeText(this, "Email not found in Google account", Toast.LENGTH_SHORT).show()
-            hideProgressBar()
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d("LoginActivity", "signInWithCredential:success")
                     val user = auth.currentUser
-                    startMainActivity()
+                    saveUserToFirestore(user?.uid, user?.displayName ?: "Pengguna Baru", user?.email ?: "")
                 } else {
                     Log.w("LoginActivity", "signInWithCredential:failure", task.exception)
                     Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
                     hideProgressBar()
                 }
+            }
+    }
+
+    private fun saveUserToFirestore(uid: String?, name: String, email: String) {
+        if (uid == null) {
+            Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val db = FirebaseFirestore.getInstance()
+        val user = hashMapOf(
+            "name" to name,
+            "email" to email
+        )
+
+        db.collection("users").document(uid).set(user)
+            .addOnSuccessListener {
+                Log.d("LoginActivity", "User added to Firestore")
+                Toast.makeText(this, "Berhasil Masuk.", Toast.LENGTH_SHORT).show()
+                updateSharedPreferences(name, email)
+                startMainActivity()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("LoginActivity", "Error adding user to Firestore: ", exception)
+                Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                hideProgressBar()
             }
     }
 
@@ -167,11 +168,10 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     hideProgressBar()
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Berhasil Masuk", Toast.LENGTH_SHORT).show()
                         val user = auth.currentUser
                         if (user != null) {
-                            val email = user.email
-                            fetchUserNameAndSave(user.uid, email) {
+                            fetchUserNameAndSave(user.uid, user.email) {
                                 startMainActivity()
                             }
                         } else {
@@ -188,7 +188,7 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(this) { task ->
                             hideProgressBar()
                             if (task.isSuccessful) {
-                                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this, "Berhasil Masuk", Toast.LENGTH_SHORT).show()
                                 val user = auth.currentUser
                                 if (user != null) {
                                     fetchUserNameAndSave(user.uid, email) {
@@ -215,7 +215,9 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     val name = document.getString("name")
-                    updateSharedPreferences(name, email)
+                    val fetchedEmail = document.getString("email")
+                    Log.d("LoginActivity", "Fetched name: $name, email: $fetchedEmail")
+                    updateSharedPreferences(name, fetchedEmail)
                     callback()
                 } else {
                     Log.d("LoginActivity", "No such document")
@@ -235,32 +237,30 @@ class LoginActivity : AppCompatActivity() {
             putString("userEmail", email)
             apply()
         }
-        Log.d("LoginActivity", "Updated SharedPreferences with name: $name, email: $email")
+        Log.d("LoginActivity", "Shared Preferences updated with name: $name, email: $email")
     }
 
     private fun getEmailFromUsername(username: String, callback: (String?) -> Unit) {
         val db = FirebaseFirestore.getInstance()
-        Log.d("LoginActivity", "Searching for username: $username")
-        val query = db.collection("users").whereEqualTo("name", username).limit(1)
-        query.get()
+        db.collection("users")
+            .whereEqualTo("name", username)
+            .get()
             .addOnSuccessListener { documents ->
-                if (documents != null && !documents.isEmpty) {
-                    val email = documents.documents[0].getString("email")
-                    Log.d("LoginActivity", "Email found: $email")
-                    callback(email)
-                } else {
-                    Log.d("LoginActivity", "No such username found. Documents: ${documents.documents}")
+                if (documents.isEmpty) {
                     callback(null)
+                } else {
+                    val email = documents.first().getString("email")
+                    callback(email)
                 }
             }
             .addOnFailureListener { exception ->
-                Log.e("LoginActivity", "Error getting documents: ", exception)
+                Log.d("LoginActivity", "Error getting documents: ", exception)
                 callback(null)
             }
     }
 
     private fun startMainActivity() {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -271,20 +271,5 @@ class LoginActivity : AppCompatActivity() {
 
     private fun hideProgressBar() {
         progressBar.visibility = View.GONE
-    }
-
-    private fun saveSessionToken(token: String) {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
-            val tokenRef = database.getReference("users").child(user.uid).child("sessionToken")
-            tokenRef.setValue(token)
-                .addOnSuccessListener {
-                    Log.d("LoginActivity", "Session token saved successfully")
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("LoginActivity", "Failed to save session token", exception)
-                }
-        }
     }
 }
