@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "100849197659",
-    "firebase_url": "https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "firebase_url": "https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app/",
     "project_id": "signora-e8d6b",
     "storage_bucket": "signora-e8d6b.appspot.com"
   },
@@ -14,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "100849197659-2sd273orgps2sq70gsjavssshhimahki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.signora",
+            "certificate_hash": "0c69aa6b87e352ff447ef0ad0104bb5a224fd996"
+          }
+        },
         {
           "client_id": "100849197659-mq46sts8frfmc0kqp33cgo1hdl342uh2.apps.googleusercontent.com",
           "client_type": 1,

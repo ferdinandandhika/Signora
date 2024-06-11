@@ -1,8 +1,10 @@
 package com.capstone.signora
 
+import ImageClassifierHelper
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,31 +19,15 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.capstone.signora.helper.ImageClassifierHelper
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
+
+
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
 import java.nio.ByteBuffer
-import java.nio.ByteOrder
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import android.graphics.Bitmap
-import android.graphics.ImageFormat
-import android.graphics.Rect
-import android.graphics.YuvImage
-import java.io.ByteArrayOutputStream
-import android.graphics.BitmapFactory
-import java.io.InputStream
-import java.nio.channels.FileChannel
 
 class CameraX : ComponentActivity() {
     private lateinit var previewView: PreviewView
@@ -73,10 +59,8 @@ class CameraX : ComponentActivity() {
         instruction = findViewById(R.id.instruction)
         resultTextView = findViewById(R.id.resultTextView)
 
-        // Inisialisasi ImageClassifierHelper
         imageClassifierHelper = ImageClassifierHelper(this, "modelsignora.tflite")
 
-        // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -85,16 +69,9 @@ class CameraX : ComponentActivity() {
             )
         }
 
-        // Set up the listener for the capture button
         captureButton.setOnClickListener { takePhoto() }
-
-        // Set up the listener for the flash button
         flashButton.setOnClickListener { toggleFlash() }
-
-        // Set up the listener for the switch camera button
         switchCameraButton.setOnClickListener { switchCamera() }
-
-        // Set up the listener for the gallery button
         galleryButton.setOnClickListener { openGallery() }
 
         outputDirectory = getOutputDirectory()
@@ -105,32 +82,20 @@ class CameraX : ComponentActivity() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
-            // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            // Preview
             val preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
 
             imageCapture = ImageCapture.Builder()
-                .setFlashMode(ImageCapture.FLASH_MODE_OFF) // Set initial flash mode
+                .setFlashMode(ImageCapture.FLASH_MODE_OFF)
                 .build()
-
-            // Image Analysis
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, YourImageAnalyzer(imageClassifierHelper, resultTextView))
-                }
 
             try {
-                // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
-
-                // Bind use cases to camera
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer
+                    this, cameraSelector, preview, imageCapture
                 )
 
             } catch (exc: Exception) {
@@ -152,16 +117,13 @@ class CameraX : ComponentActivity() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
-        // Create time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
             SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg"
         )
 
-        // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        // Set up image capture listener, which is triggered after photo has been taken
         imageCapture.takePicture(
             outputOptions, ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
@@ -173,8 +135,20 @@ class CameraX : ComponentActivity() {
                     Log.d(TAG, "Photo capture succeeded: $savedUri")
                     overlay.setImageURI(savedUri)
                     overlay.visibility = View.VISIBLE
+
+                    val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                    classifyImage(bitmap)
                 }
             })
+    }
+
+    private fun classifyImage(bitmap: Bitmap) {
+        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 128, 128, true)
+        val result = imageClassifierHelper.classify(resizedBitmap)
+
+        resultTextView.post {
+            resultTextView.text = "Result: $result"
+        }
     }
 
     private fun toggleFlash() {
@@ -185,12 +159,11 @@ class CameraX : ComponentActivity() {
             } else {
                 ImageCapture.FLASH_MODE_ON
             }
-            // Optionally, update the flash button icon to reflect the current flash mode
             flashButton.setImageResource(
                 if (it.flashMode == ImageCapture.FLASH_MODE_ON) {
-                    R.drawable.baseline_flash_on_24 // Replace with your flash on icon
+                    R.drawable.baseline_flash_on_24
                 } else {
-                    R.drawable.baseline_flash_off_24 // Replace with your flash off icon
+                    R.drawable.baseline_flash_off_24
                 }
             )
         }
@@ -206,9 +179,12 @@ class CameraX : ComponentActivity() {
         if (requestCode == REQUEST_CODE_GALLERY) {
             if (resultCode == RESULT_OK && data != null) {
                 val selectedImageUri: Uri? = data.data
-                // Handle the selected image URI if needed
+                selectedImageUri?.let {
+                    val inputStream = contentResolver.openInputStream(it)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    classifyImage(bitmap)
+                }
             } else {
-                // Restart the camera if no image was selected
                 startCamera()
             }
         }
@@ -242,13 +218,11 @@ class CameraX : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        // Unbind all use cases to release the camera
         ProcessCameraProvider.getInstance(this).get().unbindAll()
     }
 
     override fun onStop() {
         super.onStop()
-        // Unbind all use cases to release the camera
         ProcessCameraProvider.getInstance(this).get().unbindAll()
     }
 
@@ -263,36 +237,5 @@ class CameraX : ComponentActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private const val REQUEST_CODE_GALLERY = 20
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-    }
-
-    private class YourImageAnalyzer(
-        private val imageClassifierHelper: ImageClassifierHelper,
-        private val resultTextView: TextView
-    ) : ImageAnalysis.Analyzer {
-        override fun analyze(imageProxy: ImageProxy) {
-            val buffer: ByteBuffer = imageProxy.planes[0].buffer
-            val bytes = ByteArray(buffer.remaining())
-            buffer.get(bytes)
-
-            // Convert ByteBuffer to Bitmap
-            val yuvImage = YuvImage(bytes, ImageFormat.NV21, imageProxy.width, imageProxy.height, null)
-            val out = ByteArrayOutputStream()
-            yuvImage.compressToJpeg(Rect(0, 0, imageProxy.width, imageProxy.height), 100, out)
-            val imageBytes = out.toByteArray()
-            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-            // Convert bitmap to RGB format and resize to the expected input size of the model
-            val rgbBitmap = Bitmap.createScaledBitmap(bitmap.copy(Bitmap.Config.ARGB_8888, true), 64, 64, true)
-
-            // Classify the image
-            val result = imageClassifierHelper.classify(rgbBitmap)
-
-            // Update the UI on the main thread
-            resultTextView.post {
-                resultTextView.text = "Result: $result"
-            }
-
-            imageProxy.close()
-        }
     }
 }

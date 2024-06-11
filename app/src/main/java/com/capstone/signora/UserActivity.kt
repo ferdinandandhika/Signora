@@ -187,9 +187,9 @@ class UserActivity : AppCompatActivity() {
     private fun showLogoutDialog() {
         AlertDialog.Builder(this)
             .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Yes") { _, _ -> logout() }
-            .setNegativeButton("No", null)
+            .setMessage("Apakah anda mau logout")
+            .setPositiveButton("Iya") { _, _ -> logout() }
+            .setNegativeButton("Tidak", null)
             .show()
     }
 
