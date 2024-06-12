@@ -1,41 +1,54 @@
 import android.content.Context
 import android.graphics.Bitmap
-import org.tensorflow.lite.DataType
-import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.channels.FileChannel
+import android.util.Log
+import okhttp3.*
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import android.app.Activity
 
-class ImageClassifierHelper(context: Context, modelPath: String) {
+class ImageClassifierHelper(private val context: Context) {
 
-    private var interpreter: Interpreter
+    private val client = OkHttpClient()
 
-    init {
-        val assetManager = context.assets
-        val fileDescriptor = assetManager.openFd(modelPath)
-        val inputStream = fileDescriptor.createInputStream()
-        val fileChannel = inputStream.channel
-        val startOffset = fileDescriptor.startOffset
-        val declaredLength = fileDescriptor.declaredLength
-        val model = fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-        interpreter = Interpreter(model)
-    }
+    fun classify(bitmap: Bitmap, callback: (String) -> Unit) {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
 
-    fun classify(bitmap: Bitmap): String {
-        // Ubah ukuran bitmap ke ukuran yang diharapkan oleh model (misalnya 128x128)
-        val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 128, 128, true)
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("image", "image.jpg", RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)) // Ubah kunci menjadi "image"
+            .build()
 
-        val inputImage = TensorImage.fromBitmap(resizedBitmap)
-        val inputBuffer = inputImage.buffer
+        val request = Request.Builder()
+            .url("https://api-model-bhsv3nc4bq-uc.a.run.app/predict")
+            .post(requestBody)
+            .build()
 
-        val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 26), DataType.FLOAT32)
-        interpreter.run(inputBuffer, outputBuffer.buffer.rewind())
+        Log.d("ImageClassifierHelper", "Sending image to API")
 
-        val outputArray = outputBuffer.floatArray
-        val maxIndex = outputArray.indices.maxByOrNull { outputArray[it] } ?: -1
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                (context as Activity).runOnUiThread {
+                    Log.e("ImageClassifierHelper", "API call failed: ${e.message}", e)
+                    callback("Error: API call failed - ${e.message}")
+                }
+            }
 
-        return "Alphabet: ${'A' + maxIndex}"
+            override fun onResponse(call: Call, response: Response) {
+                (context as Activity).runOnUiThread {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body?.string()
+                        Log.d("ImageClassifierHelper", "API response: $responseBody")
+                        callback(responseBody ?: "Error: Empty response from server")
+                    } else {
+                        val errorBody = response.body?.string()
+                        Log.e("ImageClassifierHelper", "Failed with HTTP code ${response.code} and message: ${response.message}, error body: $errorBody")
+                        callback("Error: Server encountered an issue. Please try again later.")
+                    }
+                }
+            }
+        })
     }
 }
