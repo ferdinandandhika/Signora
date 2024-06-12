@@ -63,7 +63,6 @@
         android:id="@+id/widgetContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +80,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="115dp"
                 android:background="@drawable/wave"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -89,7 +88,7 @@
                 <ImageView
                     android:layout_width="150dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="25dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/glossarium"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,9 +99,9 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="Daftar Istilah"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
                     android:textColor="@color/primary"
-                    android:textSize="27sp"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -120,7 +119,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="115dp"
                 android:background="@drawable/wave"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -128,7 +127,7 @@
                 <ImageView
                     android:layout_width="150dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="25dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/quiz"
                     app:layout_constraintStart_toStartOf="parent"
@@ -137,12 +136,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="148dp"
                     android:fontFamily="@font/poppins_extrabold"
                     android:text="Latihan"
-
                     android:textColor="@color/primary"
-                    android:textSize="27sp"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -150,18 +150,17 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/forum"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_width="match_parent"
             android:layout_margin="20dp"
             app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/latihan">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="115dp"
                 android:background="@drawable/wave"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -170,7 +169,7 @@
                     android:id="@+id/imageView3"
                     android:layout_width="150dp"
                     android:layout_height="70dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="25dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/chatroom"
                     app:layout_constraintStart_toStartOf="parent"
@@ -179,31 +178,55 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chat"
-                    android:layout_margin="10dp"
+                    android:text="Ruang Obrolan"
+                    android:layout_margin="5dp"
                     android:fontFamily="@font/poppins_extrabold"
                     android:textColor="@color/primary"
-                    android:textSize="27sp"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/new_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/forum">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:background="@drawable/wave"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/scan_hand"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kamera"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ImageButton
-        android:id="@+id/cameraButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="70dp"
-        android:background="@drawable/camera_button_background"
-        android:padding="15dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/scan_hand"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/camera"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/bottombar_air"
@@ -218,5 +241,4 @@
         app:layout_constraintHeight_percent="0.3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
