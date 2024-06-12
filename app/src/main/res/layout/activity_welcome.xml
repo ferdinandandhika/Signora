@@ -108,7 +108,7 @@
         android:text="@string/Daftar"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="25dp"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -121,7 +121,7 @@
         android:text="@string/masuk"
         android:textAllCaps="false"
         android:textColor="@color/secondary"
-        android:textSize="25dp"
+        android:textSize="17dp"
         app:layout_constraintEnd_toStartOf="@+id/button_daftar"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"

@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var welcomeTextView: TextView
     private lateinit var profileImageView: CircleImageView
     private val handler = Handler(Looper.getMainLooper())
-    private val typingDelay: Long = 250
+    private val typingDelay: Long = 150
     private lateinit var profileImageReceiver: BroadcastReceiver
     private lateinit var usernameReceiver: BroadcastReceiver
 
@@ -82,12 +82,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Add this block to handle ProfileButton click by Muhammad Adi Kurnianto
-        val profileButton = findViewById<CircleImageView>(R.id.ProfileButton)
-        profileButton.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
-            startActivity(intent)
-        }
 
         // Add this block to handle atas_main click by Muhammad Adi Kurnianto
         val atasMain = findViewById<ConstraintLayout>(R.id.atas_main)

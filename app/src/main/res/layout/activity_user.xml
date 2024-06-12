@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/poppins_bold_italic"
+            android:fontFamily="@font/poppins_bold"
             android:text="Ferdinand Andhika Widhiyan"
             android:textColor="@color/white"
             android:textSize="25sp"
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ganti Foto Profil"
-                    android:fontFamily="@font/poppins_extrabold"
+                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/primary"
                     android:layout_marginTop="10dp"
                     android:textSize="16sp" />
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:text="Ubah Username"
                     android:textAlignment="center"
-                    android:fontFamily="@font/poppins_extrabold"
+                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/primary"
 
                     android:textSize="16sp" />
@@ -188,7 +188,7 @@
                     android:layout_height="wrap_content"
                     android:text="Ubah Password"
                     android:textAlignment="center"
-                    android:fontFamily="@font/poppins_extrabold"
+                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/primary"
                     android:textSize="16sp"  />
 
@@ -224,7 +224,7 @@
                     android:layout_height="wrap_content"
                     android:text="Logout"
                     android:textAlignment="center"
-                    android:fontFamily="@font/poppins_extrabold"
+                    android:fontFamily="@font/poppins_bold"
                     android:textColor="@color/primary"
 
                     android:textSize="16sp" />

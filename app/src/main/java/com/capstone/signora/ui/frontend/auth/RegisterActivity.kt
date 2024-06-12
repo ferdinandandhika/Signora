@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.signora.R
@@ -66,6 +67,13 @@ class RegisterActivity : AppCompatActivity() {
 
             registerUser(name, email, password)
         }
+
+        // Tambahkan logika untuk menangani klik pada button_login
+        val buttonLogin: TextView = findViewById(R.id.button_login)
+        buttonLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun signInWithGoogle() {
@@ -98,7 +106,7 @@ class RegisterActivity : AppCompatActivity() {
                     Log.d("RegisterActivity", "signInWithCredential:success")
                     val user = auth.currentUser
                     saveUserToFirestore(user?.uid, user?.displayName ?: "Pengguna Baru", user?.email ?: "")
-                    
+
                     // Redirect to MainActivity
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
@@ -117,7 +125,7 @@ class RegisterActivity : AppCompatActivity() {
                     Log.d("RegisterActivity", "createUserWithEmail:success")
                     val user = auth.currentUser
                     saveUserToFirestore(user?.uid, name, email)
-                    
+
                     // Redirect to MainActivity
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)

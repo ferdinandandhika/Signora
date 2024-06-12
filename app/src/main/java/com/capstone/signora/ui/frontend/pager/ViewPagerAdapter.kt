@@ -27,12 +27,12 @@ class ViewPagerAdapter(
             2 -> PagerFragment.newInstance(
                 context.resources.getString(R.string.title_onboarding_3),
                 context.resources.getString(R.string.description_onboarding_3),
-                R.raw.lottie_delivery_boy_bumpy_ride
+                R.raw.lottie_developer
             )
             3 -> PagerFragment.newInstance(
                 context.resources.getString(R.string.title_onboarding_4),
                 context.resources.getString(R.string.description_onboarding_4),
-                R.raw.lottie_developer
+                R.raw.page4
             )
             else -> PagerFragment.newInstance(
                 context.resources.getString(R.string.title_onboarding_5),
