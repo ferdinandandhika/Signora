@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import android.app.Activity
+import org.json.JSONObject
+import org.json.JSONException
 
 class ImageClassifierHelper(private val context: Context) {
 
@@ -18,7 +20,7 @@ class ImageClassifierHelper(private val context: Context) {
 
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("image", "image.jpg", RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)) // Ubah kunci menjadi "image"
+            .addFormDataPart("image", "image.jpg", RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray))
             .build()
 
         val request = Request.Builder()
@@ -41,7 +43,8 @@ class ImageClassifierHelper(private val context: Context) {
                     if (response.isSuccessful) {
                         val responseBody = response.body?.string()
                         Log.d("ImageClassifierHelper", "API response: $responseBody")
-                        callback(responseBody ?: "Error: Empty response from server")
+                        val result = parseClassFromResponse(responseBody)
+                        callback(result ?: "Error: Empty response from server")
                     } else {
                         val errorBody = response.body?.string()
                         Log.e("ImageClassifierHelper", "Failed with HTTP code ${response.code} and message: ${response.message}, error body: $errorBody")
@@ -50,5 +53,17 @@ class ImageClassifierHelper(private val context: Context) {
                 }
             }
         })
+    }
+
+    private fun parseClassFromResponse(responseBody: String?): String? {
+        return try {
+            val jsonObject = JSONObject(responseBody)
+            val statusObject = jsonObject.getJSONObject("status")
+            val dataObject = statusObject.getJSONObject("data")
+            dataObject.getString("class")
+        } catch (e: JSONException) {
+            Log.e("ImageClassifierHelper", "Failed to parse response", e)
+            null
+        }
     }
 }

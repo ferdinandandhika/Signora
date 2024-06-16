@@ -1,6 +1,7 @@
 package com.capstone.signora.ui.frontend.istilah
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,10 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.capstone.signora.R
 
 class DetailActivity : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
 
         val position = intent.getIntExtra("POSITION", -1)
 

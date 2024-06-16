@@ -1,6 +1,8 @@
 package com.capstone.signora.ui.frontend.auth
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.signora.R
 import com.capstone.signora.ui.frontend.home.MainActivity
+import com.capstone.signora.ui.frontend.tutorial.TutorialActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -108,9 +111,7 @@ class RegisterActivity : AppCompatActivity() {
                     saveUserToFirestore(user?.uid, user?.displayName ?: "Pengguna Baru", user?.email ?: "")
 
                     // Redirect to MainActivity
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    checkAndShowTutorial()
                 } else {
                     Log.w("RegisterActivity", "signInWithCredential:failure", task.exception)
                     Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
@@ -127,9 +128,7 @@ class RegisterActivity : AppCompatActivity() {
                     saveUserToFirestore(user?.uid, name, email)
 
                     // Redirect to MainActivity
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    checkAndShowTutorial()
                 } else {
                     Log.w("RegisterActivity", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -158,5 +157,23 @@ class RegisterActivity : AppCompatActivity() {
                 Log.e("RegisterActivity", "Error adding user to Firestore: ", exception)
                 Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun checkAndShowTutorial() {
+        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+
+        if (isFirstRun) {
+            with(sharedPreferences.edit()) {
+                putBoolean("isFirstRun", false)
+                apply()
+            }
+            val intent = Intent(this, TutorialActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        finish()
     }
 }

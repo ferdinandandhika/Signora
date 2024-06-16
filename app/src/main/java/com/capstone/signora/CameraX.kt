@@ -14,7 +14,9 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,6 +29,8 @@ class CameraX : ComponentActivity() {
     private lateinit var imageView: ImageView
     private lateinit var resultTextView: TextView
     private lateinit var imageClassifierHelper: ImageClassifierHelper
+    private lateinit var crownImageView: ImageView
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,8 @@ class CameraX : ComponentActivity() {
         scanButton = findViewById(R.id.scanButton)
         imageView = findViewById(R.id.imageView)
         resultTextView = findViewById(R.id.resultTextView)
+        crownImageView = findViewById(R.id.crown)
+        progressBar = findViewById(R.id.progressBar)
 
         imageClassifierHelper = ImageClassifierHelper(this)
 
@@ -47,6 +53,11 @@ class CameraX : ComponentActivity() {
         galleryButton.setOnClickListener { openGallery() }
         cameraButton.setOnClickListener { openCamera() }
         scanButton.setOnClickListener { scanImage() }
+
+        // Tambahkan OnClickListener untuk ImageView crown
+        crownImageView.setOnClickListener {
+            Toast.makeText(this, "Fitur premium akan datang", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun openGallery() {
@@ -64,9 +75,15 @@ class CameraX : ComponentActivity() {
         imageView.drawable?.let { drawable ->
             val bitmap = (drawable as BitmapDrawable).bitmap
             Log.d("CameraX", "Starting image classification")
+            progressBar.visibility = View.VISIBLE
             imageClassifierHelper.classify(bitmap) { result ->
                 Log.d("CameraX", "Classification result: $result")
-                resultTextView.text = "Result: $result"
+                progressBar.visibility = View.GONE
+                if (result.startsWith("Error")) {
+                    Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT).show()
+                } else {
+                    resultTextView.text = result
+                }
             }
         }
     }
