@@ -1,8 +1,6 @@
 package com.capstone.signora.ui.activity
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -35,61 +33,38 @@ class ForumActivity : AppCompatActivity() {
 
     private var profileImageUrl: String? = null
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val clearChatRunnable = object : Runnable {
-        override fun run() {
-            clearChat()
-            handler.postDelayed(this, 60000) // Schedule next clear in 60 seconds
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseFirestore.getInstance().clearPersistence()
         setContentView(R.layout.activity_forum)
 
-        // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recyclerView)
-        postAdapter = PostAdapter(posts, this)
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.reverseLayout = true
-        layoutManager.stackFromEnd = true
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = postAdapter
-
-        // Fetch profile image URL
+        initializeComponents()
         fetchProfileImageUrl()
-
-        // Fetch posts from Firestore
         fetchPosts()
+        handlePostCreation()
+    }
 
-        // Handle posting new post
+    private fun initializeComponents() {
+        recyclerView = findViewById(R.id.recyclerView)
         editTextPost = findViewById(R.id.editTextPost)
         buttonPost = findViewById(R.id.buttonPost)
-        buttonPost.setOnClickListener {
-            val postContent = editTextPost.text.toString().trim()
-            if (postContent.isEmpty()) {
-                Toast.makeText(this, "Post content cannot be empty", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
-            fetchUserDetailsAndCreatePost(postContent)
+        postAdapter = PostAdapter(posts, this)
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = true
+            stackFromEnd = true
         }
-
-        // Start the clear chat runnable
-        handler.postDelayed(clearChatRunnable, 60000)
+        recyclerView.adapter = postAdapter
     }
 
     private fun fetchProfileImageUrl() {
         val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
+        user?.let {
             val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
             val databaseRef = database.getReference("users").child(user.uid).child("profileImageUrl")
             databaseRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     profileImageUrl = snapshot.getValue(String::class.java)
                     Log.d("ForumActivity", "Profile image URL: $profileImageUrl")
-                    // Notify the adapter to refresh the profile image
                     postAdapter.updateProfileImageUrl(profileImageUrl)
                 }
 
@@ -109,9 +84,9 @@ class ForumActivity : AppCompatActivity() {
                     return@addSnapshotListener
                 }
 
-                if (snapshots != null) {
+                snapshots?.let {
                     posts.clear()
-                    for (doc in snapshots) {
+                    for (doc in it) {
                         val post = doc.toObject(Post::class.java)
                         posts.add(post)
                     }
@@ -122,17 +97,25 @@ class ForumActivity : AppCompatActivity() {
             }
     }
 
+    private fun handlePostCreation() {
+        buttonPost.setOnClickListener {
+            val postContent = editTextPost.text.toString().trim()
+            if (postContent.isEmpty()) {
+                Toast.makeText(this, "Post content cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            fetchUserDetailsAndCreatePost(postContent)
+        }
+    }
+
     private fun fetchUserDetailsAndCreatePost(postContent: String) {
         val user = FirebaseAuth.getInstance().currentUser
-        val userId = user?.uid ?: return
-
-        firestore.collection("users").document(userId).get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
+        user?.uid?.let { userId ->
+            firestore.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
                     val profileImageUri = profileImageUrl ?: ""
                     val name = document.getString("name") ?: "Unknown User"
-
-                    Log.d("ForumActivity", "Fetched user details: name=$name, profileImageUri=$profileImageUri")
 
                     val newPost = Post(
                         title = name,
@@ -140,15 +123,12 @@ class ForumActivity : AppCompatActivity() {
                         profileImageUri = profileImageUri,
                         name = name
                     )
-                    Log.d("ForumActivity", "Creating Post: $newPost")
                     createNewPost(newPost)
-                } else {
-                    Log.e("ForumActivity", "No such document")
                 }
-            }
-            .addOnFailureListener { e ->
-                Log.e("ForumActivity", "Error fetching user details: ${e.message}")
-            }
+                .addOnFailureListener { e ->
+                    Log.e("ForumActivity", "Error fetching user details: ${e.message}")
+                }
+        }
     }
 
     private fun createNewPost(newPost: Post) {
@@ -160,40 +140,12 @@ class ForumActivity : AppCompatActivity() {
                 recyclerView.scrollToPosition(0)
             }
             .addOnFailureListener { e ->
-                Log.e("ForumActivity", "Error creating post: ${e.message}")
-            }
-    }
-
-    private fun clearChat() {
-        posts.clear()
-        postAdapter.notifyDataSetChanged()
-        Log.d("ForumActivity", "Chat cleared")
-
-        clearFirestorePosts()
-    }
-
-    private fun clearFirestorePosts() {
-        firestore.collection("posts")
-            .get()
-            .addOnSuccessListener { querySnapshot ->
-                for (document in querySnapshot) {
-                    firestore.collection("posts").document(document.id).delete()
-                        .addOnSuccessListener {
-                            Log.d("ForumActivity", "DocumentSnapshot successfully deleted!")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.w("ForumActivity", "Error deleting document", e)
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                Log.w("ForumActivity", "Error getting documents: ", e)
+                Log.e("ForumActivity", "Gagal Membuat Post : ${e.message}")
             }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         postsListener?.remove()
-        handler.removeCallbacks(clearChatRunnable)
     }
 }

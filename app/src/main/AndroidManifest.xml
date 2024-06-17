@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -24,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Signora"
         tools:targetApi="31">
+
+        <!-- Existing activities and other components -->
+
         <activity
             android:name=".ui.frontend.tutorial.TutorialActivity"
             android:exported="false" />
@@ -60,7 +64,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -101,6 +104,9 @@
         <activity
             android:name=".ui.frontend.home.MainActivity"
             android:exported="true" />
+
+        <service
+            android:name=".ClearChatService" />
 
         <meta-data
             android:name="preloaded_fonts"
