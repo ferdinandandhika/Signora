@@ -21,6 +21,7 @@ import com.capstone.signora.ui.activity.ForumActivity
 import com.capstone.signora.CameraX
 import com.capstone.signora.ui.frontend.latihan.QuizActivity
 import com.capstone.signora.ui.frontend.istilah.IstilahActivity
+import com.capstone.signora.ui.frontend.tutorial.TutorialActivity
 import com.google.firebase.database.*
 import com.google.firebase.appcheck.FirebaseAppCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
@@ -39,6 +40,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Periksa apakah ini pertama kali pengguna masuk
+        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("isFirstRun", true)
+
+        if (isFirstRun) {
+            with(sharedPreferences.edit()) {
+                putBoolean("isFirstRun", false)
+                apply()
+            }
+            val intent = Intent(this, TutorialActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
 
         // Initialize Firebase App Check by Muhammad Adi Kurnianto
         val firebaseAppCheck = FirebaseAppCheck.getInstance()

@@ -13,15 +13,16 @@ class TutorialViewPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> TutorialFragment.newInstance(R.drawable.splash)
-            1 -> TutorialFragment.newInstance(R.drawable.splash)
-            2 -> TutorialFragment.newInstance(R.drawable.splash)
-            3 -> TutorialFragment.newInstance(R.drawable.splash)
-            else -> TutorialFragment.newInstance(R.drawable.splash)
+            0 -> TutorialFragment.newInstance(R.drawable.slide1)
+            1 -> TutorialFragment.newInstance(R.drawable.slide2)
+            2 -> TutorialFragment.newInstance(R.drawable.slide3)
+            3 -> TutorialFragment.newInstance(R.drawable.slide4)
+            4 -> TutorialFragment.newInstance(R.drawable.slide5)
+            else -> TutorialFragment.newInstance(R.drawable.slide6)
         }
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return 6
     }
 }

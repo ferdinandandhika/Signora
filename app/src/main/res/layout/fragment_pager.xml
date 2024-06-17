@@ -16,7 +16,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher_round" />
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/pager2" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text_onboarding_title"

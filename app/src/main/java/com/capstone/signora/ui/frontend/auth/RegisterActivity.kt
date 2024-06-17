@@ -2,9 +2,9 @@ package com.capstone.signora.ui.frontend.auth
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -68,10 +68,10 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            progressBar.visibility = View.VISIBLE
             registerUser(name, email, password)
         }
 
-        // Tambahkan logika untuk menangani klik pada button_login
         val buttonLogin: TextView = findViewById(R.id.button_login)
         buttonLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -93,6 +93,7 @@ class RegisterActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
+                progressBar.visibility = View.VISIBLE
                 firebaseAuthWithGoogle(account)
             } catch (e: ApiException) {
                 Log.w("RegisterActivity", "Google sign in failed", e)
@@ -105,12 +106,12 @@ class RegisterActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
+                progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
                     Log.d("RegisterActivity", "signInWithCredential:success")
                     val user = auth.currentUser
                     saveUserToFirestore(user?.uid, user?.displayName ?: "Pengguna Baru", user?.email ?: "")
-
-                    // Redirect to MainActivity
+                    saveFirstRunStatus()
                     checkAndShowTutorial()
                 } else {
                     Log.w("RegisterActivity", "signInWithCredential:failure", task.exception)
@@ -122,12 +123,12 @@ class RegisterActivity : AppCompatActivity() {
     private fun registerUser(name: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
+                progressBar.visibility = View.GONE
                 if (task.isSuccessful) {
                     Log.d("RegisterActivity", "createUserWithEmail:success")
                     val user = auth.currentUser
                     saveUserToFirestore(user?.uid, name, email)
-
-                    // Redirect to MainActivity
+                    saveFirstRunStatus()
                     checkAndShowTutorial()
                 } else {
                     Log.w("RegisterActivity", "createUserWithEmail:failure", task.exception)
@@ -157,6 +158,14 @@ class RegisterActivity : AppCompatActivity() {
                 Log.e("RegisterActivity", "Error adding user to Firestore: ", exception)
                 Toast.makeText(this, "Failed to save user data", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun saveFirstRunStatus() {
+        val sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putBoolean("isFirstRun", true)
+            apply()
+        }
     }
 
     private fun checkAndShowTutorial() {
