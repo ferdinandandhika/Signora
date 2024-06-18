@@ -41,7 +41,6 @@ tensorflowLiteSupport = "0.1.0"
 tensorflowLiteMetadata = "0.1.0"
 
 [libraries]
-
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
 androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "cameraCore" }
@@ -97,4 +96,3 @@ tensorflow-lite-metadata = { group = "org.tensorflow", name = "tensorflow-lite-m
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
-

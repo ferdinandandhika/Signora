@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -79,8 +80,10 @@ class MainActivity : AppCompatActivity() {
         profileImageView.setOnClickListener {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
-                val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
-                val databaseRef = database.getReference("users").child(user.uid).child("profileImageUrl")
+                val database =
+                    FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
+                val databaseRef =
+                    database.getReference("users").child(user.uid).child("profileImageUrl")
                 databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val imageUrl = snapshot.getValue(String::class.java)
@@ -92,7 +95,11 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.e("MainActivity", "Failed to load profile image URL", error.toException())
+                        Log.e(
+                            "MainActivity",
+                            "Failed to load profile image URL",
+                            error.toException()
+                        )
                     }
                 })
             }
@@ -128,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Add this block to handle bottombar_air button click
-        val cameraButton = findViewById<ImageButton>(R.id.bottombar_air)
+        val cameraButton = findViewById<ImageButton>(R.id.cameraButton)
         cameraButton.setOnClickListener {
             val intent = Intent(this, CameraX::class.java)
             startActivity(intent)
@@ -144,7 +151,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        registerReceiver(profileImageReceiver, IntentFilter("com.capstone.signora.PROFILE_IMAGE_UPDATED"))
+        registerReceiverCompat(
+            profileImageReceiver,
+            IntentFilter("com.capstone.signora.PROFILE_IMAGE_UPDATED")
+        )
 
         // Register broadcast receiver for username updates by Muhammad Adi Kurnianto
         usernameReceiver = object : BroadcastReceiver() {
@@ -155,7 +165,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        registerReceiver(usernameReceiver, IntentFilter("com.capstone.signora.USERNAME_UPDATED"))
+        registerReceiverCompat(
+            usernameReceiver,
+            IntentFilter("com.capstone.signora.USERNAME_UPDATED")
+        )
     }
 
     private fun animateText(text: String) {
@@ -183,8 +196,10 @@ class MainActivity : AppCompatActivity() {
     private fun loadProfileImage() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
-            val databaseRef = database.getReference("users").child(user.uid).child("profileImageUrl")
+            val database =
+                FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
+            val databaseRef =
+                database.getReference("users").child(user.uid).child("profileImageUrl")
             databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val imageUrl = snapshot.getValue(String::class.java)
@@ -232,5 +247,12 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(profileImageReceiver)
         unregisterReceiver(usernameReceiver)
         handler.removeCallbacksAndMessages(null)
+    }
+
+    private fun registerReceiverCompat(receiver: BroadcastReceiver, filter: IntentFilter) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+        }
     }
 }

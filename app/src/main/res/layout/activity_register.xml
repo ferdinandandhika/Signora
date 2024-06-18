@@ -27,8 +27,8 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="298dp"
-        android:layout_height="212dp"
+        android:layout_width="258dp"
+        android:layout_height="169dp"
         android:paddingTop="30dp"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"

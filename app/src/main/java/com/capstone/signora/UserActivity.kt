@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
@@ -67,7 +68,7 @@ class UserActivity : AppCompatActivity() {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
                 val database = FirebaseDatabase.getInstance("https://signora-e8d6b-default-rtdb.asia-southeast1.firebasedatabase.app")
-                val databaseRef = database.getReference("users").child(user.uid).child("profileImageUrl")
+                val databaseRef = database.getReference("   users").child(user.uid).child("profileImageUrl")
                 databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val imageUrl = snapshot.getValue(String::class.java)
@@ -96,7 +97,9 @@ class UserActivity : AppCompatActivity() {
                 }
             }
         }
-        registerReceiver(profileImageReceiver, IntentFilter("com.capstone.signora.PROFILE_IMAGE_UPDATED"))
+        registerReceiverCompat(profileImageReceiver, IntentFilter("com.capstone.signora.PROFILE_IMAGE_UPDATED").apply {
+            addCategory(Intent.CATEGORY_DEFAULT)
+        })
 
         // Register broadcast receiver for username updates by Muhammad Adi Kurnianto
         usernameReceiver = object : BroadcastReceiver() {
@@ -107,7 +110,9 @@ class UserActivity : AppCompatActivity() {
                 }
             }
         }
-        registerReceiver(usernameReceiver, IntentFilter("com.capstone.signora.USERNAME_UPDATED"))
+        registerReceiverCompat(usernameReceiver, IntentFilter("com.capstone.signora.USERNAME_UPDATED").apply {
+            addCategory(Intent.CATEGORY_DEFAULT)
+        })
 
         // Handle "Ubah Username" click by Muhammad Adi Kurnianto
         val ubahUsernameCard = findViewById<CardView>(R.id.ubah_username)
@@ -221,6 +226,14 @@ class UserActivity : AppCompatActivity() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })
             finish()
+        }
+    }
+
+    private fun registerReceiverCompat(receiver: BroadcastReceiver, filter: IntentFilter) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(receiver, filter)
         }
     }
 }

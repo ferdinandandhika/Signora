@@ -3,6 +3,7 @@ package com.capstone.signora.ui.frontend.auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -29,6 +30,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var progressBar: ProgressBar
+    private var isPasswordVisible = false
 
     companion object {
         private const val RC_SIGN_IN = 9001
@@ -76,6 +78,21 @@ class RegisterActivity : AppCompatActivity() {
         buttonLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        val passwordEditText: EditText = findViewById(R.id.password)
+        val showPasswordButton: ImageButton = findViewById(R.id.show_password_button)
+
+        showPasswordButton.setOnClickListener {
+            if (isPasswordVisible) {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                showPasswordButton.setImageResource(R.drawable.baseline_remove_red_eye_24)
+            } else {
+                passwordEditText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                showPasswordButton.setImageResource(R.drawable.eyesblue)
+            }
+            passwordEditText.setSelection(passwordEditText.length())
+            isPasswordVisible = !isPasswordVisible
         }
     }
 

@@ -195,28 +195,32 @@
         android:id="@+id/cameraButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="70dp"
         android:background="@drawable/camera_button_background"
+        android:contentDescription="@string/camera"
         android:padding="15dp"
+        android:layout_marginBottom="40dp"
         android:scaleType="centerInside"
         android:src="@drawable/scan_hand"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/bottombar_air"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/camera"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/bottombar_air"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scaleType="fitXY"
         android:background="@android:color/transparent"
-        android:src="@drawable/bottombar_air"
         android:contentDescription="@string/profile_image_description"
+        android:scaleType="fitXY"
+        android:src="@drawable/bottombar_air"
+        android:clickable="false"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.3"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/widgetContainer"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
